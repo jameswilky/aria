@@ -37,6 +37,8 @@ app.UseSwaggerUi3();
 
 app.Run();
 
+var p = new Person();
+
 public class Person
 {
     public string Name { get; set; }
