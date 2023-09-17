@@ -30,7 +30,7 @@
         "christian-kohler.npm-intellisense",
         "ardenivanov.svelte-intellisense",
         "ms-dotnettools.csdevkit",
-        
+        "pkief.material-icon-theme",
         // Personal overrides
         "wakatime.vscode-wakatime"
 
