@@ -14,13 +14,6 @@ set -x
 
 ###############################################################################################
 
-dotnet tool restore
-
-# Start local setup
-if [ -f "$WD/local/setup.sh" ] 
-then
-    sh $WD/local/setup.sh
-else
-    echo "No Local setup found"
-fi
-
+# Install node packages
+pnpm install 
+pnpm run build
