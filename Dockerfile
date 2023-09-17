@@ -4,7 +4,7 @@ FROM ubuntu:latest
 RUN apt-get update && apt-get upgrade -y
 
 # Install OS dependencies
-RUN apt-get install -y curl gnupg wget git
+RUN apt-get install -y curl gnupg wget git bash 
 
 # ======= Node Setup =========
 # Install nodejs
@@ -14,9 +14,19 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash && apt-get install -
 RUN npm install -g pnpm
 RUN npx playwright install
 
-# ====== .NET Setup =======
-COPY dotnet_setup.sh /tmp/devcontainer/dotnet_setup.sh
-RUN /bin/bash //tmp/devcontainer/dotnet_setup.sh
+# ======= .NET Setup ========
+
+# Update package sources for dotnet packages
+RUN echo "Package: dotnet* aspnet* netstandard*" > /etc/apt/preferences.d/my-pin-prefs && \
+    echo 'Pin: origin "packages.microsoft.com"' >> /etc/apt/preferences.d/my-pin-prefs && \
+    echo "Pin-Priority: 1001" >> /etc/apt/preferences.d/my-pin-prefs
+
+# Get Ubuntu version and set up Microsoft repository
+RUN wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb 
+RUN dpkg -i packages-microsoft-prod.deb 
+RUN rm packages-microsoft-prod.deb
+
+RUN apt-get update && apt-get install -y aspnetcore-runtime-7.0 dotnet-runtime-7.0 dotnet-sdk-7.0
 
 # ========= Users =========
 # Setup VSCode user. This is to ensure you dont run into any file conflicts with the vscode mount and the container
