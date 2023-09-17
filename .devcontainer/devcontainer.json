@@ -1,0 +1,59 @@
+// This is the base line dev container with recommended plugins. To use it, copy it to your .decontainer folder and click 'Rebuild With Container' to boot up the container.
+// This is not in the devcontainer folder by default to enable personal customization. The .devcontainer/devcontainer.json path is ignored by default
+{
+  "name": "Base Dev container",
+  "build": {
+    // Sets the run context to one level up instead of the .devcontainer folder.
+    "context": "..",
+    // Update the 'dockerFile' property if you aren't using the standard 'Dockerfile' filename.
+    "dockerfile": "../Dockerfile"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.autopep8",
+        "ms-azuretools.vscode-docker",
+        "dbaeumer.vscode-eslint",
+        "github.vscode-github-actions",
+        "eamodio.gitlens",
+        "ecmel.vscode-html-css",
+        "VisualStudioExptTeam.vscodeintellicode",
+        "VisualStudioExptTeam.intellicode-api-usage-examples",
+        "ms-playwright.playwright",
+        "ckolkman.vscode-postgres",
+        "esbenp.prettier-vscode",
+        "yoavbls.pretty-ts-errors",
+        "ms-python.vscode-pylance",
+        "ms-python.python",
+        "donjayamanne.python-environment-manager",
+        "mtxr.sqltools",
+        "svelte.svelte-vscode",
+        "bradlc.vscode-tailwindcss",
+        "kisstkondoros.typelens",
+        "ZixuanChen.vitest-explorer",
+        "redhat.vscode-yaml",
+        "christian-kohler.npm-intellisense",
+        "ardenivanov.svelte-intellisense",
+        "matangover.mypy"
+      ]
+    }
+  },
+  // TODO how do i get terminals pre-loaded with the right projects open?
+
+  // Features to add to the dev container. More info: https://containers.dev/features.
+  // "features": {},
+
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  // "forwardPorts": [],
+
+  // Triggers the repo setup to build and install required packages
+  "postCreateCommand": "sudo bash ./setup.sh",
+
+  //"runArgs": []
+
+  // Configure tool-specific properties.
+  // "customizations": {},
+
+  // Uncomment to connect as an existing user other than the container default. More info: https://aka.ms/dev-containers-non-root.
+  "remoteUser": "vscode"
+}

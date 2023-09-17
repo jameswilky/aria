@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aria.Server", "Aria.Server\Aria.Server.csproj", "{77FE48BF-E904-4A18-A19E-755E91232626}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aria.Server", "src\Aria.Server\Aria.Server.csproj", "{77FE48BF-E904-4A18-A19E-755E91232626}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
