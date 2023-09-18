@@ -6,6 +6,10 @@ RUN apt-get update && apt-get upgrade -y
 # Install OS dependencies
 RUN apt-get install -y curl gnupg wget git bash 
 
+# ======= SQLite Setup =========
+RUN apt-get update && apt-get install -y sqlite3 libsqlite3-dev
+
+
 # ======= Node Setup =========
 # Install nodejs
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash && apt-get install -y nodejs
@@ -15,7 +19,6 @@ RUN npm install -g pnpm
 RUN npx playwright install
 
 # ======= .NET Setup ========
-
 # Update package sources for dotnet packages
 RUN echo "Package: dotnet* aspnet* netstandard*" > /etc/apt/preferences.d/my-pin-prefs && \
     echo 'Pin: origin "packages.microsoft.com"' >> /etc/apt/preferences.d/my-pin-prefs && \

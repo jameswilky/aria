@@ -14,9 +14,6 @@ set -x
 
 ###############################################################################################
 
-bash $WD/src/Aria.Server/build.sh
-bash $WD/src/Aria.Client/build.sh
-
 # Start local setup
 if [ -f "$WD/local/setup.sh" ] 
 then
@@ -24,4 +21,8 @@ then
 else
     echo "No Local setup found"
 fi
+
+
+bash $WD/src/Aria.Server/build.sh
+bash $WD/src/Aria.Client/build.sh
 

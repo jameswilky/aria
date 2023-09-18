@@ -31,7 +31,8 @@
         "ardenivanov.svelte-intellisense",
         "ms-dotnettools.csdevkit",
         "pkief.material-icon-theme",
-        "vunguyentuan.vscode-postcss"
+        "vunguyentuan.vscode-postcss",
+        "qwtel.sqlite-viewer"
         
         // Personal overrides
         ,"wakatime.vscode-wakatime"

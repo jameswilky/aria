@@ -18,7 +18,7 @@ export class AriaClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    getPeople(): Promise<Person> {
+    getPeople(): Promise<Person[]> {
         let url_ = this.baseUrl + "/people";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -34,14 +34,21 @@ export class AriaClient {
         });
     }
 
-    protected processGetPeople(response: Response): Promise<Person> {
+    protected processGetPeople(response: Response): Promise<Person[]> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = Person.fromJS(resultData200);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(Person.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -49,11 +56,12 @@ export class AriaClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<Person>(null as any);
+        return Promise.resolve<Person[]>(null as any);
     }
 }
 
 export class Person implements IPerson {
+    id?: number;
     name?: string;
     age?: number;
 
@@ -68,6 +76,7 @@ export class Person implements IPerson {
 
     init(_data?: any) {
         if (_data) {
+            this.id = _data["id"];
             this.name = _data["name"];
             this.age = _data["age"];
         }
@@ -82,6 +91,7 @@ export class Person implements IPerson {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
         data["name"] = this.name;
         data["age"] = this.age;
         return data;
@@ -89,6 +99,7 @@ export class Person implements IPerson {
 }
 
 export interface IPerson {
+    id?: number;
     name?: string;
     age?: number;
 }

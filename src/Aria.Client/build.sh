@@ -16,4 +16,4 @@ set -x
 
 # Install node packages
 pnpm install 
-vite build
+pnpm build
