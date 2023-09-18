@@ -1,3 +1,4 @@
+using Aria.Server.Services.Database.Models;
 using NSwag;
 using NSwag.Generation.Processors.Security;
 
@@ -6,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add API Explorer to enable NSwag
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddDbContext<MyDbContext>();
+builder.Services.AddDbContext<AriaContext>();
 
 // Register NSwag services before building the app
 builder.Services.AddOpenApiDocument(document =>
@@ -30,9 +31,9 @@ if (app.Environment.IsDevelopment())
 }
 
 
-app.MapGet("/people", (MyDbContext db) =>
+app.MapGet("/conversations", (AriaContext db) =>
 {
-    return db.People.ToList();
+    return db.Conversations.ToList();
 });
 
 app.UseOpenApi();
@@ -42,7 +43,7 @@ app.UseSwaggerUi3();
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<MyDbContext>();
+    var context = services.GetRequiredService<AriaContext>();
     context.Database.EnsureCreated();
 }
 

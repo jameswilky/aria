@@ -16,6 +16,7 @@ set -x
 
 dotnet tool restore
 dotnet restore
+dotnet ef dbcontext scaffold "Data Source=../db/aria.db" Microsoft.EntityFrameworkCore.Sqlite -o Services/Database/Models --force
 dotnet build
 dotnet test
 dotnet nswag run nswag.json
