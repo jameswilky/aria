@@ -14,6 +14,8 @@ set -x
 
 ###############################################################################################
 
-# Install node packages
-pnpm install 
-pnpm run build
+dotnet tool restore
+dotnet restore
+dotnet build
+dotnet test
+dotnet nswag run nswag.json

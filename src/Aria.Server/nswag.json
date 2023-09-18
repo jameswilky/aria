@@ -9,6 +9,7 @@
       "runtime": null,
       "targetFramework": null,
       "noBuild": false,
+      "msBuildOutputPath": null,
       "verbose": true,
       "workingDirectory": null,
       "requireParametersWithoutDefault": false,
@@ -17,6 +18,7 @@
       "defaultReferenceTypeNullHandling": "Null",
       "defaultDictionaryValueReferenceTypeNullHandling": "NotNull",
       "defaultResponseReferenceTypeNullHandling": "NotNull",
+      "generateOriginalParameterNames": true,
       "defaultEnumHandling": "Integer",
       "flattenInheritanceHierarchy": false,
       "generateKnownTypes": true,
@@ -26,6 +28,8 @@
       "generateAbstractSchemas": true,
       "ignoreObsoleteProperties": false,
       "allowReferencesWithProperties": false,
+      "useXmlDocumentation": true,
+      "resolveExternalXmlDocumentation": true,
       "excludedTypeNames": [],
       "serviceHost": null,
       "serviceBasePath": null,
@@ -46,8 +50,10 @@
       "createWebHostBuilderMethod": null,
       "startupType": null,
       "allowNullableBodyParameters": true,
+      "useHttpAttributeNameAsOperationId": false,
       "output": "openapi.json",
       "outputType": "Swagger2",
+      "newLineBehavior": "Auto",
       "assemblyPaths": [],
       "assemblyConfig": null,
       "referencePaths": [],
@@ -55,9 +61,12 @@
     }
   },
   "codeGenerators": {
-    "openapi2tsclient": {
-      "input": "openapi.json",
-      "output": "icd.ts"
+    "openApiToTypeScriptClient": {
+      "className": "AriaClient",
+      "template": "Fetch",
+      "promiseType": "Promise",
+      "httpClass": "Http",
+      "output": "../Aria.Client/src/lib/server/aria.ts"
     }
   }
 }
