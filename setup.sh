@@ -22,7 +22,5 @@ else
     echo "No Local setup found"
 fi
 
-
 bash $WD/src/Aria.Server/build.sh
 bash $WD/src/Aria.Client/build.sh
-

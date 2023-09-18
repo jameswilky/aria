@@ -7,6 +7,12 @@
       "commands": [
         "nswag"
       ]
+    },
+    "dotnet-ef": {
+      "version": "7.0.11",
+      "commands": [
+        "dotnet-ef"
+      ]
     }
   }
 }
