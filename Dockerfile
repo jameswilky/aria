@@ -16,7 +16,9 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash && apt-get install -
 
 # Install node dependencies
 RUN npm install -g pnpm
-RUN npx playwright install
+RUN pnpm dlx playwright install
+RUN pnpm dlx playwright install-deps
+
 
 # ======= .NET Setup ========
 # Update package sources for dotnet packages

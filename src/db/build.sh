@@ -13,5 +13,8 @@ echo "===== Executing script $SCRIPT from $PWD ===== "
 set -x
 
 ###############################################################################################
+if [ -f "./aria.db" ]; then
+    rm ./aria.db
+fi
 
 sqlite3 aria.db < tables.sql
