@@ -30,7 +30,9 @@
         "christian-kohler.npm-intellisense",
         "ardenivanov.svelte-intellisense",
         "ms-dotnettools.csdevkit",
-        "pkief.material-icon-theme"
+        "pkief.material-icon-theme",
+        "vunguyentuan.vscode-postcss"
+
       ]
     }
   },

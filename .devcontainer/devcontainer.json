@@ -31,8 +31,10 @@
         "ardenivanov.svelte-intellisense",
         "ms-dotnettools.csdevkit",
         "pkief.material-icon-theme",
+        "vunguyentuan.vscode-postcss"
+        
         // Personal overrides
-        "wakatime.vscode-wakatime"
+        ,"wakatime.vscode-wakatime"
 
       ]
     }
