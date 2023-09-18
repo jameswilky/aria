@@ -16,6 +16,9 @@ set -x
 
 dotnet tool restore
 dotnet restore
+if [ -d "./Services/Database/Models " ]; then
+    rm -rf ./Services/Database/Models 
+
 dotnet ef dbcontext scaffold "Data Source=../db/aria.db" Microsoft.EntityFrameworkCore.Sqlite -o Services/Database/Models --force
 dotnet build
 dotnet test

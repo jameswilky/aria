@@ -43,10 +43,7 @@
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   // "forwardPorts": [],
-
-  // Triggers the repo setup to build and install required packages
-  "postCreateCommand": "sudo bash ./setup.sh",
-
+  
   //"runArgs": []
 
   // Configure tool-specific properties.
