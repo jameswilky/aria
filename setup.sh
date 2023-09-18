@@ -14,7 +14,8 @@ set -x
 
 ###############################################################################################
 
-dotnet tool restore
+bash $WD/src/Aria.Server/build.sh
+bash $WD/src/Aria.Client/build.sh
 
 # Start local setup
 if [ -f "$WD/local/setup.sh" ] 
