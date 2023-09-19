@@ -34,23 +34,23 @@ RUN rm packages-microsoft-prod.deb
 RUN apt-get update && apt-get install -y aspnetcore-runtime-7.0 dotnet-runtime-7.0 dotnet-sdk-7.0
 
 # ========= Users =========
-ARG IS_VSCODE=true
-RUN if [ "$IS_VSCODE" = "false" ]; then exit 0; fi
+# ARG IS_VSCODE=true
+# RUN if [ "$IS_VSCODE" = "false" ]; then exit 0; fi
 
-# Setup VSCode user. This is to ensure you dont run into any file conflicts with the vscode mount and the container
-ARG USERNAME=vscode
-ARG USER_UID=1000
-ARG USER_GID=$USER_UID
+# # Setup VSCode user. This is to ensure you dont run into any file conflicts with the vscode mount and the container
+# ARG USERNAME=vscode
+# ARG USER_UID=1000
+# ARG USER_GID=$USER_UID
 
-# Create the user
-RUN groupadd --gid $USER_GID $USERNAME \
-    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
-    # Add sudo permissions
-    && apt-get update \
-    && apt-get install -y sudo \
-    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
-    && chmod 0440 /etc/sudoers.d/$USERNAME
+# # Create the user
+# RUN groupadd --gid $USER_GID $USERNAME \
+#     && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
+#     # Add sudo permissions
+#     && apt-get update \
+#     && apt-get install -y sudo \
+#     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
+#     && chmod 0440 /etc/sudoers.d/$USERNAME
     
-# [Optional] Set the default user. Omit if you want to keep the default as root.
-USER $USERNAME
+# # [Optional] Set the default user. Omit if you want to keep the default as root.
+# USER $USERNAME
 
