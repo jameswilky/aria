@@ -34,6 +34,9 @@ RUN rm packages-microsoft-prod.deb
 RUN apt-get update && apt-get install -y aspnetcore-runtime-7.0 dotnet-runtime-7.0 dotnet-sdk-7.0
 
 # ========= Users =========
+ARG IS_VSCODE=true
+RUN if [ "$IS_VSCODE" = "false" ]; then exit 1; fi
+
 # Setup VSCode user. This is to ensure you dont run into any file conflicts with the vscode mount and the container
 ARG USERNAME=vscode
 ARG USER_UID=1000

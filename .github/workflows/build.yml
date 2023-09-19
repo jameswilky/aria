@@ -47,6 +47,8 @@ jobs:
           # Cache the docker layers
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          build-args: |
+            IS_VSCODE=false
 
   # Build the app using the docker image we just built, or using a cached one.
   build_app:
