@@ -1,0 +1,89 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch: {}
+
+jobs:
+  get_git_info:
+    runs-on: ubuntu-latest
+    outputs:
+      branch: ${{ steps.extract_branch.outputs.branch }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Get branch name
+        id: extract_branch
+        run: echo "branch=${GITHUB_REF#refs/heads/}" && echo "::set-output name=branch::$(echo ${GITHUB_REF#refs/heads/})"
+
+  # Only run this step if our docker file changed
+  publish_build_image:
+    needs: get_git_info
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_AUTH_TOKEN }}
+
+      # The result of this will be cached
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ vars.DOCKER_IMAGE_REPO }}:build-${{ needs.get_git_info.outputs.branch }}
+          # Cache the docker layers
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # Build the app using the docker image we just built, or using a cached one.
+  build_app:
+    needs: [publish_build_image, get_git_info]
+    if: always()
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ vars.DOCKER_IMAGE_REPO }}:build-${{ needs.get_git_info.outputs.branch }}
+      credentials:
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_AUTH_TOKEN }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Cache items in the node modules folder, update cache if the packages lock file changes
+      # This means that if the lock file does not change, then we will copy the cached node modules folder
+      - name: Cache node modules
+        id: node-module-cache
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ./src/client/node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('./pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
+        name: List the state of node modules
+        continue-on-error: true
+        run: npm list
+        working-directory: ./src/client
+
+      - name: Build
+        run: bash ./build.sh
+
