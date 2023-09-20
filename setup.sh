@@ -21,3 +21,5 @@ then
 else
     echo "No Local setup found"
 fi
+
+su - vscode -c "bash $WD/build.sh"
