@@ -1,0 +1,25 @@
+{
+  "name": "tests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  
+  "scripts": {
+    "test": "pnpm exec bddgen && npx playwright test",
+    "test:todo": "pnpm exec bddgen --tags '@todo' && pnpm exec playwright test",
+    "test:chromium": "pnpm exec bddgen && pnpm exec playwright test --project chromium",
+    "watch:bdd": "nodemon -w ./features -w ./steps -e feature,js,ts --exec 'pnpm exec bddgen'",
+    "watch:pw": "playwright test --ui",
+    "watch": "run-p watch:*",
+    "report": "pnpm exec playwright show-report",
+    "steps": "pnpm exec bddgen export"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.38.0",
+    "@types/node": "^20.6.3",
+    "playwright-bdd": "^5.3.0"
+  }
+}
