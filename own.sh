@@ -12,9 +12,7 @@ echo "===== Executing script $SCRIPT from $PWD ===== "
 # Print each command before using it
 set -x
 
-###############################################################################################
-if [ -f "./aria.db" ]; then
-    rm ./aria.db
-fi
+############################
 
-sqlite3 aria.db < tables.sql
+sudo find ./ -not -user vscode
+sudo find ./ -not -user vscode -exec chown vscode:vscode {} +

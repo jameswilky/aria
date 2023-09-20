@@ -13,9 +13,14 @@ echo "===== Executing script $SCRIPT from $PWD ===== "
 set -x
 
 ###############################################################################################
+if [ -f "./aria.db" ]; then
+    rm ./aria.db
+fi
+rm -rf ./Models/* 
+rm -rf aria.db
 
-dotnet tool restore
-
-bash $WD/src/Aria.Database/build.sh
-bash $WD/src/Aria.Server/build.sh
-bash $WD/src/client/build.sh
+sqlite3 aria.db < tables.sql
+dotnet restore
+dotnet ef dbcontext scaffold "Data Source=aria.db" Microsoft.EntityFrameworkCore.Sqlite -o Models --force --verbose
+dotnet build
+dotnet test

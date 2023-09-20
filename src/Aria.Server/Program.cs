@@ -1,6 +1,6 @@
-using Aria.Server.Services.Database.Models;
 using NSwag;
 using NSwag.Generation.Processors.Security;
+using Aria.Database.Models;
 
 
 var builder = WebApplication.CreateBuilder(args);
