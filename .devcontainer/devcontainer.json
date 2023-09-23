@@ -8,37 +8,85 @@
     // Update the 'dockerFile' property if you aren't using the standard 'Dockerfile' filename.
     "dockerfile": "../Dockerfile.dev"
   },
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/mikaello/devcontainer-features/modern-shell-utils:1": {},
+    "ghcr.io/devcontainers-contrib/features/pre-commit:2": {},
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+  },
+  "mounts": [
+    "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind",
+    "source=devcontainer-bashhistory,target=/commandhistory,type=volume"
+  ],
   "customizations": {
     "vscode": {
       "extensions": [
-        "ms-azuretools.vscode-docker",
-        "dbaeumer.vscode-eslint",
-        "github.vscode-github-actions",
+        // Git / Build tools
         "eamodio.gitlens",
+        "mhutchie.git-graph",
+        "github.vscode-github-actions",
+        "redhat.vscode-yaml",
+
+        // Web Dev/JS
+        "dbaeumer.vscode-eslint",
         "ecmel.vscode-html-css",
-        "VisualStudioExptTeam.vscodeintellicode",
-        "VisualStudioExptTeam.intellicode-api-usage-examples",
         "ms-playwright.playwright",
-        "esbenp.prettier-vscode",
         "yoavbls.pretty-ts-errors",
         "svelte.svelte-vscode",
         "bradlc.vscode-tailwindcss",
         "kisstkondoros.typelens",
         "ZixuanChen.vitest-explorer",
-        "redhat.vscode-yaml",
         "christian-kohler.npm-intellisense",
         "ardenivanov.svelte-intellisense",
-        "ms-dotnettools.csdevkit",
-        "pkief.material-icon-theme",
+        "alexkrechik.cucumberautocomplete",
         "vunguyentuan.vscode-postcss",
-        "qwtel.sqlite-viewer",
-        "alexkrechik.cucumberautocomplete"
-        
-        // Personal overrides
-        ,"wakatime.vscode-wakatime"
 
-      ]
+        // C#
+        "VisualStudioExptTeam.vscodeintellicode",
+        "VisualStudioExptTeam.intellicode-api-usage-examples",
+        "ms-dotnettools.csdevkit",
+
+        // SQL
+        "qwtel.sqlite-viewer",
+
+        // Aesthetic
+        "pkief.material-icon-theme",
+        "johnpapa.vscode-peacock",
+
+        // Misc
+        "esbenp.prettier-vscode",
+        "ms-azuretools.vscode-docker",
+        "timonwong.shellcheck",
+        "robertz.code-snapshot",
+
+        // Personal overrides
+        "wakatime.vscode-wakatime"
+      ],
+      "settings": {
+        "editor.tabSize": 4,
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "terminal.integrated.profiles.linux": {
+          "bash": {
+            "path": "bash",
+            "icon": "terminal-bash"
+          },
+          "zsh": {
+            "path": "zsh"
+          },
+          "fish": {
+            "path": "fish"
+          },
+          "tmux": {
+            "path": "tmux",
+            "icon": "terminal-tmux"
+          },
+          "pwsh": {
+            "path": "pwsh",
+            "icon": "terminal-powershell"
+          }
+        }
     }
+  }
   },
   // Features to add to the dev container. More info: https://containers.dev/features.
   // "features": {},

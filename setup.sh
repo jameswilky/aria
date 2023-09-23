@@ -13,7 +13,6 @@ echo "===== Executing script $SCRIPT from $PWD ===== "
 set -x
 
 ###############################################################################################
-
 # Start local setup
 if [ -f "$WD/local/setup.sh" ] 
 then
@@ -22,4 +21,6 @@ else
     echo "No Local setup found"
 fi
 
+su - vscode -c "bash $WD/setup_zsh.sh"
 su - vscode -c "bash $WD/build.sh"
+

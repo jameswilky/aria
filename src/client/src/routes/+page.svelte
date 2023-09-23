@@ -1,28 +1,6 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
 	import * as Card from '$lib/components/ui/card';
-	import * as Select from '$lib/components/ui/select';
-	import { Input } from '$lib/components/ui/input';
-	import { Label } from '$lib/components/ui/label';
-
-	const frameworks = [
-		{
-			value: 'sveltekit',
-			label: 'SvelteKit'
-		},
-		{
-			value: 'next',
-			label: 'Next.js'
-		},
-		{
-			value: 'astro',
-			label: 'Astro'
-		},
-		{
-			value: 'nuxt',
-			label: 'Nuxt.js'
-		}
-	];
 </script>
 
 <div
@@ -42,7 +20,7 @@
 			<Card.Content />
 			<Card.Footer class="flex justify-between">
 				<Button variant="outline">Login</Button>
-				<Button>Signup</Button>
+				<Button variant="secondary">Signup</Button>
 			</Card.Footer>
 		</Card.Root>
 	</div>

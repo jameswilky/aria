@@ -4,7 +4,7 @@ FROM ubuntu:latest
 RUN apt-get update && apt-get upgrade -y
 
 # Install OS dependencies
-RUN apt-get install -y curl gnupg wget git bash 
+RUN apt-get install -y curl gnupg wget git bash tree zsh
 
 # ======= SQLite Setup =========
 RUN apt-get update && apt-get install -y sqlite3 libsqlite3-dev
@@ -50,7 +50,14 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && apt-get install -y sudo \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME
-    
-# [Optional] Set the default user. Omit if you want to keep the default as root.
+
+# Create folder as root
+RUN mkdir /commandhistory 
+RUN touch /commandhistory/.bash_history 
+RUN chown -R $USERNAME /commandhistory 
+
 USER $USERNAME
+
+# Used to persist bash history as per https://code.visualstudio.com/remote/advancedcontainers/persist-bash-history
+RUN SNIPPET="export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhistory/.bash_history" && echo "$SNIPPET" >> "/home/$USERNAME/.bashrc"
 
