@@ -6,7 +6,7 @@
       "command": "pnpm run dev --open",
       "request": "launch",
       "type": "node-terminal",
-      "cwd": "${workspaceFolder}/src/Aria.Client"
+      "cwd": "${workspaceFolder}/src/client"
     },
     {
       "name": "Debug SvelteKit Server",
@@ -16,7 +16,7 @@
       "skipFiles": ["<node_internals>/**"],
       "type": "node",
       "console": "integratedTerminal",
-      "cwd": "${workspaceFolder}/src/Aria.Client"
+      "cwd": "${workspaceFolder}/src/client"
     },
 
     {

@@ -8,8 +8,8 @@
 				<img src="https://flowbite.com/docs/images/logo.svg" class="h-8 mr-3" alt="FlowBite Logo" />
 				<span
 					class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white"
-					>Aria</span
-				>
+				/>
+				<h1 class="scroll-m-20 text-3xl font-extrabold tracking-tight lg:text-3xl">Aria</h1>
 			</div>
 			<div class="flex items-center">
 				<div class="flex items-center ml-3">Hello, User</div>

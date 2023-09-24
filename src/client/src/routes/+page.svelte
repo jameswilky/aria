@@ -19,8 +19,8 @@
 			</Card.Header>
 			<Card.Content />
 			<Card.Footer class="flex justify-between">
-				<Button variant="outline">Login</Button>
-				<Button variant="secondary">Signup</Button>
+				<Button variant="outline" href="/auth/login">Login</Button>
+				<Button variant="secondary" href="/auth/signup">Signup</Button>
 			</Card.Footer>
 		</Card.Root>
 	</div>
