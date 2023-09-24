@@ -1,5 +1,3 @@
-using Microsoft.IdentityModel.Tokens;
-
 namespace Aria.Server.DTO.Models
 {
     public class AuthenticatedUser

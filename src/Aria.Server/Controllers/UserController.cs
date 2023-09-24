@@ -1,0 +1,40 @@
+using Aria.Server.DTO.Actions;
+using Aria.Server.Middleware;
+using Aria.Server.Services.UserService;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Aria.Server.Controllers
+{
+    [ApiController]
+    [Route("/user")]
+    public class UserController : ControllerBase
+    {
+        private readonly UserService _userService;
+
+        public UserController(UserService userService)
+        {
+            _userService = userService;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(RegisterUser request)
+        {
+            var authenticatedUser = await _userService.CreateUser(request);
+            return Created($"/users/{authenticatedUser.Id}", authenticatedUser);
+        }
+
+        [HttpGet("profile")]
+        [AuthorizeUser]
+        public async Task<IActionResult> Get()
+        {
+            if (HttpContext.Items.ContainsKey("UserId"))
+            {
+                var userId = (long)HttpContext.Items["UserId"];
+                var profile = await _userService.GetProfile(userId);
+                return Ok(profile);
+            }
+
+            return Unauthorized();
+        }
+    }
+}

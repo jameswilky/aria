@@ -5,18 +5,21 @@ using Aria.Database.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Aria.Server.Resources.Users;
+using Aria.Server.Services.UserService;
 
 WebApplication Build(WebApplicationBuilder builder)
 {
     // Add API Explorer to enable NSwag
     builder.Services.AddEndpointsApiExplorer();
+
+    // Add Services
     builder.Services.AddDbContext<AriaContext>();
+    builder.Services.AddTransient<UserService>();
 
     // Register NSwag services before building the app
     builder.Services.AddOpenApiDocument(document =>
     {
-        document.Title = "My API";
+        document.Title = "Aria";
         document.AddSecurity("JWT", Enumerable.Empty<string>(), new OpenApiSecurityScheme
         {
             Type = OpenApiSecuritySchemeType.ApiKey,
@@ -51,6 +54,7 @@ WebApplication Build(WebApplicationBuilder builder)
     });
 
     builder.Services.AddAuthorization();
+    builder.Services.AddControllers();
 
     return builder.Build();
 }
@@ -66,15 +70,10 @@ void UseMiddleware(WebApplication app)
     app.UseAuthorization();
     app.UseOpenApi();
     app.UseSwaggerUi3();
-
+    app.MapControllers();
 }
 
-void MapRoutes(WebApplication app)
-{
-    UserRouter.Map(app);
-}
-
-void CreateScope(WebApplication app)
+void CreateDbScope(WebApplication app)
 {
     using (var scope = app.Services.CreateScope())
     {
@@ -87,6 +86,5 @@ void CreateScope(WebApplication app)
 var builder = WebApplication.CreateBuilder(args);
 var app = Build(builder);
 UseMiddleware(app);
-MapRoutes(app);
-CreateScope(app);
+CreateDbScope(app);
 app.Run();

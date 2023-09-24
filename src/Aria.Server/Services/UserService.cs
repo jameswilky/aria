@@ -8,38 +8,28 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using BC = BCrypt.Net.BCrypt;
 
-namespace Aria.Server.Resources.Users
+namespace Aria.Server.Services.UserService
 {
-    public static class UserRouter
+    public class UserService
     {
-        public static void Map(WebApplication app)
-        {
-            app.MapPost("/users", async (JwtSettings jwt, AriaContext db, RegisterUser request) =>
-            {
-                var authenticatedUser = await CreateUser(jwt, request, db);
-                return Results.Created($"/users/${authenticatedUser.Id}", authenticatedUser);
-            });
+        private readonly AriaContext _db;
+        private readonly JwtSettings _jwt;
 
-            app.MapPost("/auth/signin", async (JwtSettings jwt, AriaContext db, AuthenticateUser request) =>
-            {
-                var authenticatedUser = await GetUser(jwt, db, request);
-                if (authenticatedUser != null)
-                {
-                    return Results.Ok(authenticatedUser);
-                }
-                return Results.BadRequest(new { message = "Invalid username or password" });
-            });
+        public UserService(AriaContext db, JwtSettings jwt)
+        {
+            _db = db;
+            _jwt = jwt;
         }
 
-        private static string GenerateToken(JwtSettings jwt, long id)
+        string GenerateToken(long id)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(jwt.Key);
+            var key = Encoding.ASCII.GetBytes(_jwt.Key);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[] { new Claim("id", id.ToString()) }),
-                Issuer = jwt.Issuer,
-                Audience = jwt.Audience,
+                Issuer = _jwt.Issuer,
+                Audience = _jwt.Audience,
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
@@ -47,9 +37,9 @@ namespace Aria.Server.Resources.Users
             return tokenHandler.WriteToken(token);
         }
 
-        private static async Task<AuthenticatedUser?> GetUser(JwtSettings jwt, AriaContext db, AuthenticateUser request)
+        public async Task<AuthenticatedUser?> GetUser(AuthenticateUser request)
         {
-            var user = await db.Users.FirstOrDefaultAsync(u => u.Username == request.Username);
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.Username == request.Username);
 
             if (user == null || !BC.Verify(request.Password, user.HashedPassword))
             {
@@ -57,7 +47,7 @@ namespace Aria.Server.Resources.Users
                 return null;
             }
 
-            var token = GenerateToken(jwt, user.Id);
+            var token = GenerateToken(user.Id);
 
             return new AuthenticatedUser
             {
@@ -67,7 +57,7 @@ namespace Aria.Server.Resources.Users
             };
         }
 
-        private static async Task<AuthenticatedUser> CreateUser(JwtSettings jwt, RegisterUser newUser, AriaContext db)
+        public async Task<AuthenticatedUser> CreateUser(RegisterUser newUser)
         {
             var hashedPassword = BC.HashPassword(newUser.Password);
 
@@ -78,16 +68,29 @@ namespace Aria.Server.Resources.Users
                 HashedPassword = hashedPassword
             };
 
-            db.Users.Add(user);
-            await db.SaveChangesAsync();
+            _db.Users.Add(user);
+            await _db.SaveChangesAsync();
 
-            var token = GenerateToken(jwt, user.Id);
+            var token = GenerateToken(user.Id);
 
             return new AuthenticatedUser
             {
                 Username = user.Username,
                 Id = user.Id,
                 Token = token
+            };
+        }
+
+        public async Task<Profile?> GetProfile(long id)
+        {
+            var user = await _db.Users.FindAsync(id);
+
+            if (user == null) return null;
+
+            return new Profile
+            {
+                Username = user.Username,
+                Id = user.Id
             };
         }
     }
