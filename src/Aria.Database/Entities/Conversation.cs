@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Aria.Database.Models;
+namespace Aria.Database.Entities;
 
-public partial class User
+public partial class Conversation
 {
     public long Id { get; set; }
 
-    public string Username { get; set; } = null!;
-
-    public string Email { get; set; } = null!;
-
-    public string HashedPassword { get; set; } = null!;
+    public byte[]? CreatedAt { get; set; }
 
     public virtual ICollection<ConversationUser> ConversationUsers { get; set; } = new List<ConversationUser>();
 

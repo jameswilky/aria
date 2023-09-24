@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Aria.Database.Models;
+namespace Aria.Database.Entities;
 
 public partial class ConversationUser
 {

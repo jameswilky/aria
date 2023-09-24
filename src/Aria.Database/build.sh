@@ -16,11 +16,12 @@ set -x
 if [ -f "./aria.db" ]; then
     rm ./aria.db
 fi
-rm -rf ./Models/* 
+rm -rf ./Entities/* 
 rm -rf aria.db
 
 sqlite3 aria.db < tables.sql
 dotnet restore
-dotnet ef dbcontext scaffold "Data Source=aria.db" Microsoft.EntityFrameworkCore.Sqlite -o Models --force --verbose
+# Data Source is relative to teh Aria.Server
+dotnet ef dbcontext scaffold  "Data Source=../Aria.Database/aria.db" Microsoft.EntityFrameworkCore.Sqlite -o Entities --force --verbose 
 dotnet build
 dotnet test

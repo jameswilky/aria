@@ -2,6 +2,24 @@
   "version": "0.2.0",
   "configurations": [
     {
+      // TODO figure out how to set this as watch
+      "name": "Debug Aria.Server",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/Aria.Server/bin/Debug/net7.0/Aria.Server.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/src/Aria.Server",
+      "stopAtEntry": false,
+      // "serverReadyAction": {
+      //   "action": "openExternally",
+      //   "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+      // },
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    {
       "name": "SvelteKit Dev Server",
       "command": "pnpm run dev --open",
       "request": "launch",

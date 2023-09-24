@@ -45,6 +45,7 @@
         "VisualStudioExptTeam.vscodeintellicode",
         "VisualStudioExptTeam.intellicode-api-usage-examples",
         "ms-dotnettools.csdevkit",
+        "aliasadidev.nugetpackagemanagergui",
 
         // SQL
         "qwtel.sqlite-viewer",
