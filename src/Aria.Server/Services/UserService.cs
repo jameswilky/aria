@@ -73,7 +73,7 @@ namespace Aria.Server.Services.UserService
 
             var token = GenerateToken(user.Id);
 
-            return new AuthenticatedUser
+            return new AuthenticatedUser()
             {
                 Username = user.Username,
                 Id = user.Id,

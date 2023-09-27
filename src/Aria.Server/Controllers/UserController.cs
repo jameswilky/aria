@@ -1,4 +1,5 @@
 using Aria.Server.DTO.Actions;
+using Aria.Server.DTO.Models;
 using Aria.Server.Middleware;
 using Aria.Server.Services.UserService;
 using Microsoft.AspNetCore.Mvc;
@@ -17,6 +18,7 @@ namespace Aria.Server.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(201, Type = typeof(AuthenticatedUser))] // Needed for nswag to work correctly
         public async Task<IActionResult> Create(RegisterUser request)
         {
             var authenticatedUser = await _userService.CreateUser(request);

@@ -1,3 +1,4 @@
+
 {
   "runtime": "Net70",
   "defaultVariables": null,
@@ -62,11 +63,14 @@
   },
   "codeGenerators": {
     "openApiToTypeScriptClient": {
-      "className": "AriaClient",
+      "className": "Aria{controller}Client",
       "template": "Fetch",
       "promiseType": "Promise",
-      "httpClass": "Http",
-      "output": "../client/src/lib/server/generated/aria.ts"
+      "httpClass": "HttpClient",
+      "clientBaseClass": "ApiClientBase",
+      "configurationClass": "IConfig",
+      "useTransformOptionsMethod": true,
+      "output": "../client/src/lib/server/aria/aria.generated.ts"
     }
   }
 }

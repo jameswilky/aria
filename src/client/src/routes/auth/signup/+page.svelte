@@ -1,10 +1,3 @@
-<!-- 
-	Email Address
-	User Name
-	Password
-	Sign up button
-	'Already have an account? Log in' button
- -->
 <script lang="ts">
 	import * as Form from '$lib/components/ui/form';
 	import { formSchema, type FormSchema } from './schema';

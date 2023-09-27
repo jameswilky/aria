@@ -1,7 +1,8 @@
 import type { PageServerLoad, Actions } from "./$types";
-import { fail } from "@sveltejs/kit";
+import { fail, redirect } from "@sveltejs/kit";
 import { superValidate } from "sveltekit-superforms/server";
 import { formSchema } from "./schema";
+import {createUser} from "$lib/server/aria/aria";
 export const load: PageServerLoad = () => {
   return {
     form: superValidate(formSchema)
@@ -15,8 +16,18 @@ export const actions: Actions = {
         form
       });
     }
-    return {
-      form
-    };
+    const result = await createUser(form.data);
+    if (!result.success) return fail(500, { form });
+    const user = result.value;
+
+    event.cookies.set('AuthorizationToken', `Bearer ${user.token}`, {
+      httpOnly: true,
+      path: '/',
+      //secure: true,
+      sameSite: 'strict',
+      maxAge: 60 * 60 * 24 // 1 day
+    });
+    
+    throw redirect(302, "/dashboard")
   }
 };
