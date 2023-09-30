@@ -9,6 +9,8 @@ on:
 jobs:
   publish_server_build_image:
     runs-on: ubuntu-latest
+    outputs:
+      image: ${{ steps.server_image.outputs.published-image}}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -25,6 +27,8 @@ jobs:
 
   publish_client_build_image:
     runs-on: ubuntu-latest
+    outputs:
+      image: ${{ steps.client_image.outputs.published-image}}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -44,7 +48,7 @@ jobs:
     if: always()
     runs-on: ubuntu-latest
     container:
-      image: ${{ needs.server_image.outputs.published-image }}
+      image: ${{ needs.publish_server_build_image.outputs.image }}
       credentials:
         username: ${{ secrets.DOCKER_HUB_USERNAME }}
         password: ${{ secrets.DOCKER_HUB_AUTH_TOKEN }}
@@ -57,7 +61,7 @@ jobs:
         run: |
           echo "Container info:"
           cat /etc/os-release
-          echo ${{ needs.server_image.outputs.published-image }}
+          echo ${{ needs.publish_server_build_image.outputs.image }}
 
       - name: Build
         run: bash ./src/backend/build.sh
@@ -67,7 +71,7 @@ jobs:
     if: always()
     runs-on: ubuntu-latest
     container:
-      image: ${{ needs.client_image.outputs.published-image }}
+      image: ${{ needs.publish_client_build_image.outputs.image }}
       credentials:
         username: ${{ secrets.DOCKER_HUB_USERNAME }}
         password: ${{ secrets.DOCKER_HUB_AUTH_TOKEN }}
@@ -79,7 +83,7 @@ jobs:
         run: |
           echo "Container info:"
           cat /etc/os-release
-          echo ${{ needs.client_image.outputs.published-image }}
+          echo ${{ needs.publish_client_build_image.outputs.image }}
 
       # Cache items in the node modules folder, update cache if the packages lock file changes
       # This means that if the lock file does not change, then we will copy the cached node modules folder
