@@ -26,6 +26,8 @@ namespace Aria.Server.Controllers
         }
 
         [HttpGet("profile")]
+        [ProducesResponseType(200, Type = typeof(Profile))]
+        [ProducesResponseType(401)]
         [AuthorizeUser]
         public async Task<IActionResult> Get()
         {

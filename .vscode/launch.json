@@ -20,13 +20,6 @@
       }
     },
     {
-      "name": "SvelteKit Dev Server",
-      "command": "pnpm run dev --open",
-      "request": "launch",
-      "type": "node-terminal",
-      "cwd": "${workspaceFolder}/src/client"
-    },
-    {
       "name": "Debug SvelteKit Server",
       "request": "launch",
       "runtimeArgs": ["run-script", "dev"],
@@ -36,7 +29,6 @@
       "console": "integratedTerminal",
       "cwd": "${workspaceFolder}/src/client"
     },
-
     {
       "name": "Debug Chrome",
       "type": "chrome",

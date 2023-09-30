@@ -1,4 +1,7 @@
 <script lang="ts">
+	import type { Profile } from '$lib/server/aria/aria.generated';
+
+	export let profile: Profile;
 </script>
 
 <nav class="fixed top-0 z-50 w-full bg-secondary border-b border-slate-700">
@@ -12,7 +15,7 @@
 				<h1 class="scroll-m-20 text-3xl font-extrabold tracking-tight lg:text-3xl">Aria</h1>
 			</div>
 			<div class="flex items-center">
-				<div class="flex items-center ml-3">Hello, User</div>
+				<div class="flex items-center ml-3">Hello, {profile.username}</div>
 			</div>
 		</div>
 	</div>

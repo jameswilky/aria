@@ -13,7 +13,7 @@ export class ApiClientBase{
   
     options.headers = {
       ...options.headers,
-      ...(this.config.authToken ? { Authorization: `Bearer-${this.config.authToken}` } : {})
+      ...(this.config.authToken ? { Authorization: this.config.authToken } : {})
     };
     return Promise.resolve(options);
   };
