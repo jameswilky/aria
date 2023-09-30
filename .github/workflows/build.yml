@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Publish serverbuild info
-        uses: ./.github.actions/publish-build-image
+        uses: ./.github/actions/publish-build-image
         with: 
           docker-image-tag: aria-server-build-${{ needs.get_git_branch.outputs.branch }}
           docker-file-path: ./src/server/Dockerfile.build
@@ -38,7 +38,7 @@ jobs:
         uses: actions/checkout@v4
       
       - name: Publish build info
-        uses: ./.github.actions/publish-build-image
+        uses: ./.github/actions/publish-build-image
         with: 
           docker-image-tag: aria-client-build-${{ needs.get_git_branch.outputs.branch }}
           docker-file-path: ./src/client/Dockerfile.build
