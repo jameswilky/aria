@@ -26,8 +26,8 @@ dotnet nswag run nswag.json
 temp1=$(mktemp)
 temp2=$(mktemp)
 
-custom_code_file="../client/src/lib/server/aria/aria.extensions.ts"
-generated_code_file="../client/src/lib/server/aria/aria.generated.ts"
+custom_code_file="../../client/src/lib/server/aria/aria.extensions.ts"
+generated_code_file="../../client/src/lib/server/aria/aria.generated.ts"
 
 # Find top of the class declaration in the generated code
 line_number=$(grep -n -m 1 'export' $generated_code_file | cut -d: -f1)
