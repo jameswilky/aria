@@ -7,6 +7,10 @@ inputs:
   file-path:
     description: 'Path to the target docker file'
     required: true
+  username:
+    required: true
+  auth-token:
+    required: true
 outputs:
   published-image:
     description: 'the repo:tag of the published image'
