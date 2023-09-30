@@ -36,7 +36,7 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_AUTH_TOKEN }}
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5
         with:
           context: .
           file: ./src/backend/Dockerfile.build
@@ -46,7 +46,7 @@ jobs:
           cache-to: type=gha,mode=max
 
   publish_client_build_image:
-    needs: [publish_server_build_image, get_git_info]
+    needs: get_git_info
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -63,7 +63,7 @@ jobs:
 
       # The result of this will be cached
       - name: Build and push Docker image
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5
         with:
           context: .
           file: ./src/client/Dockerfile.build
@@ -93,7 +93,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: aria.generated.ts # Need to upload this file so client can build
-          path: ./src/client/src/lib/server/aria/aria.generated.ts
+          path: ./src/client/src/lib/server/aria/
 
       - name: List files
         run: tree
