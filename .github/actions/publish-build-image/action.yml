@@ -7,6 +7,8 @@ inputs:
   file-path:
     description: 'Path to the target docker file'
     required: true
+  repo:
+    required: true
   username:
     required: true
   auth-token:
@@ -39,10 +41,10 @@ runs:
         context: .
         file: ${{ inputs.docker-file-path }}
         push: true
-        tags: ${{ vars.DOCKER_IMAGE_REPO }}:${{ inputs.docker-image-tag }}-${{ steps.get_git_branch.outputs.branch }}
+        tags: ${{ inputs.repo }}:${{ inputs.docker-image-tag }}-${{ steps.get_git_branch.outputs.branch }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
 
     - name: Output image tag
       run : |
-        echo "::set-output name=published-image::$(echo ${{ vars.DOCKER_IMAGE_REPO }}:${{ inputs.docker-image-tag }}-${{ steps.get_git_branch.outputs.branch }})"
+        echo "::set-output name=published-image::$(echo ${{ inputs.repo }}:${{ inputs.docker-image-tag }}-${{ steps.get_git_branch.outputs.branch }})"
