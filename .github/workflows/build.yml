@@ -93,7 +93,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: aria.generated.ts # Need to upload this file so client can build
-          path: ./src/client/src/lib/server/aria/
+          path: ./src/client/src/lib/server/aria/aria.generated.ts
 
       - name: List files
         run: tree
