@@ -7,18 +7,7 @@ on:
   workflow_dispatch: {}
 
 jobs:
-  get_git_info:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Get Git Info
-        id: git_info
-        uses: ./.github/actions/get-git-branch
-
   publish_server_build_image:
-    needs: get_git_info
     runs-on: ubuntu-latest
     steps :
       - name: Checkout code
@@ -27,11 +16,12 @@ jobs:
       - name: Publish serverbuild info
         uses: ./.github/actions/publish-build-image
         with: 
-          docker-image-tag: aria-server-build-${{ needs.get_git_branch.outputs.branch }}
-          docker-file-path: ./src/server/Dockerfile.build
+          image-tag: aria-server-build
+          file-path: ./src/server/Dockerfile.build
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          auth-token: ${{ secrets.DOCKER_HUB_AUTH_TOKEN }}
   
   publish_client_build_image:
-    needs: get_git_info
     runs-on: ubuntu-latest
     steps :
       - name: Checkout code
@@ -40,15 +30,17 @@ jobs:
       - name: Publish build info
         uses: ./.github/actions/publish-build-image
         with: 
-          docker-image-tag: aria-client-build-${{ needs.get_git_branch.outputs.branch }}
-          docker-file-path: ./src/client/Dockerfile.build
+          image-tag: aria-client-build
+          file-path: ./src/client/Dockerfile.build
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          auth-token: ${{ secrets.DOCKER_HUB_AUTH_TOKEN }}
 
   build_server_app:
-    needs: [publish_server_build_image, get_git_info]
+    needs: [publish_server_build_image]
     if: always()
     runs-on: ubuntu-latest
     container:
-      image: aria-server-build-${{ needs.get_git_branch.outputs.branch }}
+      image: ${{ needs.publish_server_build_image.outputs.published-image }}
       credentials:
         username: ${{ secrets.DOCKER_HUB_USERNAME }}
         password: ${{ secrets.DOCKER_HUB_AUTH_TOKEN }}
@@ -61,15 +53,14 @@ jobs:
         run: bash ./src/server/build.sh         
   
   build_client_app:
-    needs: [publish_client_build_image, get_git_info]
+    needs: [publish_client_build_image]
     if: always()
     runs-on: ubuntu-latest
     container:
-      image: aria-client-build-${{ needs.get_git_branch.outputs.branch }}
+      image: ${{ needs.publish_client_build_image.outputs.published-image }}
       credentials:
         username: ${{ secrets.DOCKER_HUB_USERNAME }}
         password: ${{ secrets.DOCKER_HUB_AUTH_TOKEN }}
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
