@@ -48,4 +48,4 @@ runs:
     - name: Output image tag
       shell: bash
       run : |
-        echo "name={published-image} value={$(echo ${{ inputs.repo }}:${{ inputs.image-tag }}-${{ steps.get_git_branch.outputs.branch }})}" >> $GITHUB_OUTPUT
+        echo "{published-image}={$(echo ${{ inputs.repo }}:${{ inputs.image-tag }}-${{ steps.get_git_branch.outputs.branch }})}" >> $GITHUB_OUTPUT
