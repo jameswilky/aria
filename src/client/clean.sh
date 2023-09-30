@@ -14,8 +14,4 @@ set -x
 
 ###############################################################################################
 
-dotnet tool restore
-
-bash $WD/src/Aria.Database/build.sh
-bash $WD/src/Aria.Server/build.sh
-bash $WD/src/client/build.sh
+sudo find ./ -type d \( -name ".pnpm-store" -o -name ".svelte-kit" -o -name "node_modules" \) -exec rm -rf {} \;

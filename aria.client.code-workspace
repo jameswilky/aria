@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"path": "src/client"
+		},
+		{
+			"path": ".devcontainer"
+		},
+		{
+			"path": ".github"
+		},
+		{
+			"path": ".git"
+		},
+		{
+			"path": "local"
+		}
+	]
+}

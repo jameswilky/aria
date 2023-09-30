@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # 
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aria.Server", "src\Aria.Server\Aria.Server.csproj", "{77FE48BF-E904-4A18-A19E-755E91232626}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aria.Server", "Aria.Server\Aria.Server.csproj", "{77FE48BF-E904-4A18-A19E-755E91232626}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{33C366AC-730D-4AA0-85F0-05EAEA5218EB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aria.Database", "src\Aria.Database\Aria.Database.csproj", "{F03C3630-674E-4570-B2AE-223EC179C26E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aria.Database", "Aria.Database\Aria.Database.csproj", "{F03C3630-674E-4570-B2AE-223EC179C26E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

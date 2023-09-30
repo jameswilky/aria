@@ -13,14 +13,8 @@ echo "===== Executing script $SCRIPT from $PWD ===== "
 set -x
 
 ###############################################################################################
-# Start local setup
-if [ -f "$WD/local/setup.sh" ] 
-then
-    sh $WD/local/setup.sh
-else
-    echo "No Local setup found"
-fi
 
-su - vscode -c "bash $WD/setup_zsh.sh"
-su - vscode -c "bash $WD/build.sh"
+dotnet tool restore
 
+bash $WD/Aria.Database/build.sh
+bash $WD/Aria.Server/build.sh

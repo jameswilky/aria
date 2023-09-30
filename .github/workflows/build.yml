@@ -9,54 +9,54 @@ on:
 jobs:
   get_git_info:
     runs-on: ubuntu-latest
-    outputs:
-      branch: ${{ steps.extract_branch.outputs.branch }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Get Git Info
+        id: git_info
+        uses: ./.github/actions/get-git-branch
 
-      - name: Get branch name
-        id: extract_branch
-        run: echo "branch=${GITHUB_REF#refs/heads/}" && echo "::set-output name=branch::$(echo ${GITHUB_REF#refs/heads/})"
-
-  # Only run this step if our docker file changed
-  publish_build_image:
+  publish_server_build_image:
     needs: get_git_info
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    steps :
+      - name: Publish serverbuild info
+        uses: ./.github.actions/publish-build-image
+        with: 
+          docker-image-tag: aria-server-build-${{ needs.get_git_branch.outputs.branch }}
+          docker-file-path: ./src/server/Dockerfile.build
+  
+  publish_client_build_image:
+    needs: get_git_info
+    runs-on: ubuntu-latest
+    steps :
+      - name: Publish build info
+        uses: ./.github.actions/publish-build-image
+        with: 
+          docker-image-tag: aria-client-build-${{ needs.get_git_branch.outputs.branch }}
+          docker-file-path: ./src/client/Dockerfile.build
 
-      - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_AUTH_TOKEN }}
-
-      # The result of this will be cached
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          file: ./Dockerfile.build
-          push: true
-          tags: ${{ vars.DOCKER_IMAGE_REPO }}:build-${{ needs.get_git_info.outputs.branch }}
-          # Cache the docker layers
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          build-args: |
-            IS_VSCODE=false
-
-  # Build the app using the docker image we just built, or using a cached one.
-  build_app:
-    needs: [publish_build_image, get_git_info]
+  build_server_app:
+    needs: [publish_server_build_image, get_git_info]
     if: always()
     runs-on: ubuntu-latest
     container:
-      image: ${{ vars.DOCKER_IMAGE_REPO }}:build-${{ needs.get_git_info.outputs.branch }}
+      image: aria-server-build-${{ needs.get_git_branch.outputs.branch }}
+      credentials:
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_AUTH_TOKEN }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build
+        run: bash ./src/server/build.sh         
+  
+  build_client_app:
+    needs: [publish_client_build_image, get_git_info]
+    if: always()
+    runs-on: ubuntu-latest
+    container:
+      image: aria-client-build-${{ needs.get_git_branch.outputs.branch }}
       credentials:
         username: ${{ secrets.DOCKER_HUB_USERNAME }}
         password: ${{ secrets.DOCKER_HUB_AUTH_TOKEN }}
@@ -87,5 +87,5 @@ jobs:
         working-directory: ./src/client
 
       - name: Build
-        run: bash ./build.sh
+        run: bash ./src/client/build.sh
 

@@ -1,7 +1,7 @@
 // This is the base line dev container with recommended plugins. To use it, copy it to your .decontainer folder and click 'Rebuild With Container' to boot up the container.
 // This is not in the devcontainer folder by default to enable personal customization. The .devcontainer/devcontainer.json path is ignored by default
 {
-  "name": "James Dev container",
+  "name": "Base Dev container",
   "build": {
     // Sets the run context to one level up instead of the .devcontainer folder.
     "context": "..",
@@ -14,10 +14,6 @@
     "ghcr.io/devcontainers-contrib/features/pre-commit:2": {},
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
   },
-  "mounts": [
-    "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind",
-    "source=devcontainer-bashhistory,target=/commandhistory,type=volume"
-  ],
   "customizations": {
     "vscode": {
       "extensions": [
@@ -48,9 +44,7 @@
         "esbenp.prettier-vscode",
         "ms-azuretools.vscode-docker",
         "timonwong.shellcheck",
-        "robertz.code-snapshot",
-        // Personal overrides
-        "wakatime.vscode-wakatime"
+        "robertz.code-snapshot"
       ],
       "settings": {
         "editor.tabSize": 4,
@@ -78,9 +72,5 @@
       }
     }
   },
-  "postCreateCommand": "sudo bash ./src/client/setup.sh",
-  // If using a wakatimeserver, need to remove this and deploy to AWS or something
-  "runArgs": [
-    "--network=wakatime"
-  ]
+  "postCreateCommand": "sudo bash ./src/client/setup.sh"
 }

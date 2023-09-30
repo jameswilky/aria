@@ -13,6 +13,14 @@ echo "===== Executing script $SCRIPT from $PWD ===== "
 set -x
 
 ###############################################################################################
+# Start local setup
+if [ -f "$WD/../../local/setup.sh" ] 
+then
+    sh $WD/../../local/setup.sh
+else
+    echo "No Local setup found"
+fi
 
-sudo find ./ -type f \( -name "openapi.json" -o -name "aria.db" \) -exec rm -rf {} \;
-sudo find ./ -type d \( -name "bin" -o -name "obj" -o -name ".pnpm-store" -o -name ".svelte-kit" -o -name "node_modules" \) -exec rm -rf {} \;
+su - node -c "bash $WD/setup_zsh.sh"
+su - node -c "bash $WD/build.sh"
+

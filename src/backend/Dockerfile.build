@@ -1,0 +1,10 @@
+FROM mcr.microsoft.com/devcontainers/dotnet:7.0-bullseye
+
+# Update the OS
+RUN apt-get update && apt-get upgrade -y
+
+# # Install OS dependencies
+# RUN apt-get install -y curl gnupg wget git bash tree
+
+# ======= SQLite Setup =========
+RUN apt-get update && apt-get install -y sqlite3 libsqlite3-dev

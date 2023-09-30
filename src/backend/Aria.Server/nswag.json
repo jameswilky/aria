@@ -1,4 +1,3 @@
-
 {
   "runtime": "Net70",
   "defaultVariables": null,
@@ -70,7 +69,7 @@
       "clientBaseClass": "ApiClientBase",
       "configurationClass": "IConfig",
       "useTransformOptionsMethod": true,
-      "output": "../client/src/lib/server/aria/aria.generated.ts"
+      "output": "../../client/src/lib/server/aria/aria.generated.ts"
     }
   }
 }

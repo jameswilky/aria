@@ -14,5 +14,5 @@ set -x
 
 ############################
 
-sudo find ./ -not -user vscode
-sudo find ./ -not -user vscode -exec chown vscode:vscode {} +
+sudo find ./ -not -user node
+sudo find ./ -not -user node -exec chown node:node {} +

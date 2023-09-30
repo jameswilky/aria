@@ -1,0 +1,21 @@
+FROM mcr.microsoft.com/devcontainers/typescript-node:1-20-bullseye
+
+# Update the OS
+RUN apt-get update && apt-get upgrade -y
+
+# Install OS dependencies
+RUN apt-get install -y curl gnupg wget git bash tree
+
+# Install node dependencies
+RUN npm install -g pnpm
+RUN pnpm dlx playwright install
+RUN pnpm dlx playwright install-deps
+
+# ======= Node Setup =========
+# Install nodejs
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash && apt-get install -y nodejs
+
+# Install node dependencies
+RUN npm install -g pnpm
+RUN pnpm dlx playwright install
+RUN pnpm dlx playwright install-deps
