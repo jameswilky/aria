@@ -89,13 +89,12 @@ jobs:
       - name: Build
         run: bash ./src/backend/build.sh
 
-  # Build the app using the docker image we just built, or using a cached one.
   build_client:
     needs: [publish_client_build_image, build_server, get_git_info]
     if: always()
     runs-on: ubuntu-latest
     container:
-      image: ${{ vars.DOCKER_IMAGE_REPO }}:aria-server-build-${{ needs.get_git_info.outputs.branch }}
+      image: ${{ vars.DOCKER_IMAGE_REPO }}:aria-client-build-${{ needs.get_git_info.outputs.branch }}
       credentials:
         username: ${{ secrets.DOCKER_HUB_USERNAME }}
         password: ${{ secrets.DOCKER_HUB_AUTH_TOKEN }}
