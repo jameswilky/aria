@@ -15,6 +15,7 @@ jobs:
 
       - name: Publish server build image
         uses: ./.github/actions/publish-build-image
+        id: server_image
         with:
           image-tag: aria-server-build
           file-path: ./src/backend/Dockerfile.build
@@ -30,6 +31,7 @@ jobs:
 
       - name: Publish client build image
         uses: ./.github/actions/publish-build-image
+        id: client_image
         with:
           image-tag: aria-client-build
           file-path: ./src/client/Dockerfile.build
@@ -42,7 +44,7 @@ jobs:
     if: always()
     runs-on: ubuntu-latest
     container:
-      image: ${{ needs.publish_server_build_image.outputs.published-image }}
+      image: ${{ needs.server_image.outputs.published-image }}
       credentials:
         username: ${{ secrets.DOCKER_HUB_USERNAME }}
         password: ${{ secrets.DOCKER_HUB_AUTH_TOKEN }}
@@ -55,7 +57,7 @@ jobs:
         run: |
           echo "Container info:"
           cat /etc/os-release
-          echo ${{ needs.publish_server_build_image.outputs.published-image }}
+          echo ${{ needs.server_image.outputs.published-image }}
 
       - name: Build
         run: bash ./src/backend/build.sh
@@ -65,7 +67,7 @@ jobs:
     if: always()
     runs-on: ubuntu-latest
     container:
-      image: ${{ needs.publish_client_build_image.outputs.published-image }}
+      image: ${{ needs.client_image.outputs.published-image }}
       credentials:
         username: ${{ secrets.DOCKER_HUB_USERNAME }}
         password: ${{ secrets.DOCKER_HUB_AUTH_TOKEN }}
@@ -77,7 +79,7 @@ jobs:
         run: |
           echo "Container info:"
           cat /etc/os-release
-          echo ${{ needs.publish_client_build_image.outputs.published-image }}
+          echo ${{ needs.client_image.outputs.published-image }}
 
       # Cache items in the node modules folder, update cache if the packages lock file changes
       # This means that if the lock file does not change, then we will copy the cached node modules folder

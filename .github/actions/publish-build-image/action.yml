@@ -8,13 +8,17 @@ inputs:
     description: 'Path to the target docker file'
     required: true
   repo:
+    description: 'target docker repo'
     required: true
   username:
+    description: 'docker hub user name'
     required: true
   auth-token:
+    description: 'docker hub auth token or password'
     required: true
 outputs:
   published-image:
+    value: ''
     description: 'the repo:tag of the published image'
 runs:
   using: 'composite'
