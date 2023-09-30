@@ -9,28 +9,28 @@ on:
 jobs:
   publish_server_build_image:
     runs-on: ubuntu-latest
-    steps :
+    steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Publish server build image
         uses: ./.github/actions/publish-build-image
-        with: 
+        with:
           image-tag: aria-server-build
           file-path: ./src/backend/Dockerfile.build
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           auth-token: ${{ secrets.DOCKER_HUB_AUTH_TOKEN }}
           repo: ${{ vars.DOCKER_IMAGE_REPO}}
-  
+
   publish_client_build_image:
     runs-on: ubuntu-latest
-    steps :
+    steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Publish client build image
         uses: ./.github/actions/publish-build-image
-        with: 
+        with:
           image-tag: aria-client-build
           file-path: ./src/client/Dockerfile.build
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
@@ -52,10 +52,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build
-        run: bash ./src/backend/build.sh         
-  
+        run: bash ./src/backend/build.sh
+
   build_client:
-    needs: [publish_client_build_image,  build_server]
+    needs: [publish_client_build_image, build_server]
     if: always()
     runs-on: ubuntu-latest
     container:
@@ -66,6 +66,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Show container info
+        run: |
+          echo "Container info:"
+          cat /etc/os-release
+          echo ${{ needs.publish_server_build_image.outputs.published-image }}
+          echo ${{ needs.publish_client_build_image.outputs.published-image }}
 
       # Cache items in the node modules folder, update cache if the packages lock file changes
       # This means that if the lock file does not change, then we will copy the cached node modules folder
@@ -90,4 +97,3 @@ jobs:
 
       - name: Build
         run: bash ./src/client/build.sh
-
