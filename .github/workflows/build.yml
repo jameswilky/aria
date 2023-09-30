@@ -13,7 +13,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Publish serverbuild info
+      - name: Publish server build image
         uses: ./.github/actions/publish-build-image
         with: 
           image-tag: aria-server-build
@@ -28,7 +28,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       
-      - name: Publish build info
+      - name: Publish client build image
         uses: ./.github/actions/publish-build-image
         with: 
           image-tag: aria-client-build
