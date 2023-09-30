@@ -10,6 +10,9 @@ jobs:
   get_git_info:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
       - name: Get Git Info
         id: git_info
         uses: ./.github/actions/get-git-branch
