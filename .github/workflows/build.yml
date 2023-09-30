@@ -95,6 +95,9 @@ jobs:
           name: aria.generated.ts # Need to upload this file so client can build
           path: ./src/client/src/lib/server/aria/aria.generated.ts
 
+      - name: List files
+        run: ls -la ./src/client/src/lib/server/aria/
+
   build_client:
     needs: [publish_client_build_image, build_server, get_git_info]
     if: always()
@@ -113,6 +116,9 @@ jobs:
         with:
           name: aria.generated.ts # Need to download this from server container
           path: ./src/client/src/lib/server/aria/aria.generated.ts
+
+      - name: List files
+        run: ls -la ./src/client/src/lib/server/aria/
 
       # Cache items in the node modules folder, update cache if the packages lock file changes
       # This means that if the lock file does not change, then we will copy the cached node modules folder
