@@ -51,6 +51,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Show container info
+        run: |
+          echo "Container info:"
+          cat /etc/os-release
+          echo ${{ needs.publish_server_build_image.outputs.published-image }}
+
       - name: Build
         run: bash ./src/backend/build.sh
 
@@ -71,7 +77,6 @@ jobs:
         run: |
           echo "Container info:"
           cat /etc/os-release
-          echo ${{ needs.publish_server_build_image.outputs.published-image }}
           echo ${{ needs.publish_client_build_image.outputs.published-image }}
 
       # Cache items in the node modules folder, update cache if the packages lock file changes
