@@ -39,13 +39,13 @@ runs:
       uses: docker/build-push-action@v4
       with:
         context: .
-        file: ${{ inputs.docker-file-path }}
+        file: ${{ inputs.file-path }}
         push: true
-        tags: ${{ inputs.repo }}:${{ inputs.docker-image-tag }}-${{ steps.get_git_branch.outputs.branch }}
+        tags: ${{ inputs.repo }}:${{ inputs.image-tag }}-${{ steps.get_git_branch.outputs.branch }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
 
     - name: Output image tag
       shell: bash
       run : |
-        echo "::set-output name=published-image::$(echo ${{ inputs.repo }}:${{ inputs.docker-image-tag }}-${{ steps.get_git_branch.outputs.branch }})"
+        echo "::set-output name=published-image::$(echo ${{ inputs.repo }}:${{ inputs.image-tag }}-${{ steps.get_git_branch.outputs.branch }})"
