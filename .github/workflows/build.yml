@@ -53,7 +53,7 @@ jobs:
         run: bash ./src/server/build.sh         
   
   build_client_app:
-    needs: [publish_client_build_image]
+    needs: [publish_client_build_image,  build_server_app]
     if: always()
     runs-on: ubuntu-latest
     container:
