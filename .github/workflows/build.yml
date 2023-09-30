@@ -46,7 +46,7 @@ jobs:
           cache-to: type=gha,mode=max
 
   publish_client_build_image:
-    needs: get_git_info
+    needs: [publish_server_build_image, get_git_info]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
