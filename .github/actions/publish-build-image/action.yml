@@ -46,5 +46,6 @@ runs:
         cache-to: type=gha,mode=max
 
     - name: Output image tag
+      shell: bash
       run : |
         echo "::set-output name=published-image::$(echo ${{ inputs.repo }}:${{ inputs.docker-image-tag }}-${{ steps.get_git_branch.outputs.branch }})"
