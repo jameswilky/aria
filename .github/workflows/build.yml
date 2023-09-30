@@ -17,7 +17,7 @@ jobs:
         uses: ./.github/actions/publish-build-image
         with: 
           image-tag: aria-server-build
-          file-path: ./src/server/Dockerfile.build
+          file-path: ./src/backend/Dockerfile.build
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           auth-token: ${{ secrets.DOCKER_HUB_AUTH_TOKEN }}
           repo: ${{ vars.DOCKER_IMAGE_REPO}}
@@ -37,7 +37,7 @@ jobs:
           auth-token: ${{ secrets.DOCKER_HUB_AUTH_TOKEN }}
           repo: ${{ vars.DOCKER_IMAGE_REPO}}
 
-  build_server_app:
+  build_server:
     needs: [publish_server_build_image]
     if: always()
     runs-on: ubuntu-latest
@@ -52,10 +52,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build
-        run: bash ./src/server/build.sh         
+        run: bash ./src/backend/build.sh         
   
-  build_client_app:
-    needs: [publish_client_build_image,  build_server_app]
+  build_client:
+    needs: [publish_client_build_image,  build_server]
     if: always()
     runs-on: ubuntu-latest
     container:
