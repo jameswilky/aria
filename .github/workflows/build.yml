@@ -115,7 +115,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: aria.generated.ts # Need to download this from server container
-          path: ./src/client/src/lib/server/aria/aria.generated.ts
+          path: ./src/client/src/lib/server/aria/
 
       - name: List files
         run: tree
