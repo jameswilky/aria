@@ -7,16 +7,12 @@ on:
   workflow_dispatch: {}
 
 jobs:
-  checkout:
+  get_git_info:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-  get_git_info:
-    runs-on: ubuntu-latest
-    needs: checkout
-    steps:
       - name: Get Git Info
         id: git_info
         uses: ./.github/actions/get-git-branch
@@ -25,6 +21,9 @@ jobs:
     needs: get_git_info
     runs-on: ubuntu-latest
     steps :
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Publish serverbuild info
         uses: ./.github.actions/publish-build-image
         with: 
@@ -35,6 +34,9 @@ jobs:
     needs: get_git_info
     runs-on: ubuntu-latest
     steps :
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
       - name: Publish build info
         uses: ./.github.actions/publish-build-image
         with: 
