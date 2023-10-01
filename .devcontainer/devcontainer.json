@@ -1,18 +1,17 @@
 // This is the base line dev container with recommended plugins. To use it, copy it to your .decontainer folder and click 'Rebuild With Container' to boot up the container.
 // This is not in the devcontainer folder by default to enable personal customization. The .devcontainer/devcontainer.json path is ignored by default
 {
-  "name": "James Dev container",
+  "name": "Dev container",
   "build": {
     // Sets the run context to one level up instead of the .devcontainer folder.
     "context": "..",
     // Update the 'dockerFile' property if you aren't using the standard 'Dockerfile' filename.
-    "dockerfile": "../src/client/Dockerfile.dev"
+    "dockerfile": "../Dockerfile.build"
   },
   "features": {
     "ghcr.io/devcontainers/features/github-cli:1": {},
     "ghcr.io/mikaello/devcontainer-features/modern-shell-utils:1": {},
-    "ghcr.io/devcontainers-contrib/features/pre-commit:2": {},
-    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+    "ghcr.io/devcontainers-contrib/features/pre-commit:2": {}
   },
   "mounts": [
     "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind",
@@ -39,7 +38,12 @@
         "ardenivanov.svelte-intellisense",
         "alexkrechik.cucumberautocomplete",
         "vunguyentuan.vscode-postcss",
-        // SQLite
+        // C#
+        "VisualStudioExptTeam.vscodeintellicode",
+        "VisualStudioExptTeam.intellicode-api-usage-examples",
+        "ms-dotnettools.csdevkit",
+        "aliasadidev.nugetpackagemanagergui",
+        // SQL
         "qwtel.sqlite-viewer",
         // Aesthetic
         "pkief.material-icon-theme",
@@ -78,7 +82,7 @@
       }
     }
   },
-  "postCreateCommand": "sudo bash ./src/client/setup.sh",
+  "postCreateCommand": "sudo bash ./setup.sh",
   // If using a wakatimeserver, need to remove this and deploy to AWS or something
   "runArgs": [
     "--network=wakatime"

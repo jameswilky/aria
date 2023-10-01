@@ -2,7 +2,6 @@
 .pnpm-store
 local/**
 env
-.devcontainer/devcontainer.json
 fonts
 .zshrc
 .idea

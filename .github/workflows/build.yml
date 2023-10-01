@@ -19,33 +19,8 @@ jobs:
         id: extract_branch
         run: echo "branch=${GITHUB_REF#refs/heads/}" && echo "::set-output name=branch::$(echo ${GITHUB_REF#refs/heads/})"
 
-  publish_server_build_image:
-    needs: get_git_info
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_AUTH_TOKEN }}
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./src/backend/Dockerfile.build
-          push: true
-          tags: ${{ vars.DOCKER_IMAGE_REPO }}:aria-server-build-${{ needs.get_git_info.outputs.branch }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-  publish_client_build_image:
+  # Only run this step if our docker file changed
+  publish_build_image:
     needs: get_git_info
     runs-on: ubuntu-latest
     steps:
@@ -63,62 +38,32 @@ jobs:
 
       # The result of this will be cached
       - name: Build and push Docker image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v4
         with:
           context: .
-          file: ./src/client/Dockerfile.build
+          file: ./Dockerfile.build
           push: true
-          tags: ${{ vars.DOCKER_IMAGE_REPO }}:aria-client-build-${{ needs.get_git_info.outputs.branch }}
+          tags: ${{ vars.DOCKER_IMAGE_REPO }}:build-${{ needs.get_git_info.outputs.branch }}
           # Cache the docker layers
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          build-args: |
+            IS_VSCODE=false
 
-  build_server:
-    needs: [publish_server_build_image, get_git_info]
+  # Build the app using the docker image we just built, or using a cached one.
+  build_app:
+    needs: [publish_build_image, get_git_info]
     if: always()
     runs-on: ubuntu-latest
     container:
-      image: ${{ vars.DOCKER_IMAGE_REPO }}:aria-server-build-${{ needs.get_git_info.outputs.branch }}
+      image: ${{ vars.DOCKER_IMAGE_REPO }}:build-${{ needs.get_git_info.outputs.branch }}
       credentials:
         username: ${{ secrets.DOCKER_HUB_USERNAME }}
         password: ${{ secrets.DOCKER_HUB_AUTH_TOKEN }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Build
-        run: bash ./src/backend/build.sh
-
-      - name: Upload generated file
-        uses: actions/upload-artifact@v2
-        with:
-          name: aria.generated.ts # Need to upload this file so client can build
-          path: ./src/client/src/lib/server/aria/aria.generated.ts
-
-      - name: List files
-        run: tree
-
-  build_client:
-    needs: [publish_client_build_image, build_server, get_git_info]
-    if: always()
-    runs-on: ubuntu-latest
-    container:
-      image: ${{ vars.DOCKER_IMAGE_REPO }}:aria-client-build-${{ needs.get_git_info.outputs.branch }}
-      credentials:
-        username: ${{ secrets.DOCKER_HUB_USERNAME }}
-        password: ${{ secrets.DOCKER_HUB_AUTH_TOKEN }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Download file from artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: aria.generated.ts # Need to download this from server container
-          path: ./src/client/src/lib/server/aria/
-
-      - name: List files
-        run: tree
 
       # Cache items in the node modules folder, update cache if the packages lock file changes
       # This means that if the lock file does not change, then we will copy the cached node modules folder
@@ -134,6 +79,7 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
+
       - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
         name: List the state of node modules
         continue-on-error: true
@@ -141,4 +87,4 @@ jobs:
         working-directory: ./src/client
 
       - name: Build
-        run: bash ./src/client/build.sh
+        run: bash ./build.sh

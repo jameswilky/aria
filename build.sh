@@ -12,7 +12,8 @@ echo "===== Executing script $SCRIPT from $PWD ===== "
 # Print each command before using it
 set -x
 
-############################
+###############################################################################################
 
-sudo find ./ -not -user node
-sudo find ./ -not -user node -exec chown node:node {} +
+
+bash $WD/src/backend/build.sh
+bash $WD/src/client/build.sh

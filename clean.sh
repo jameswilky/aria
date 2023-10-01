@@ -14,7 +14,6 @@ set -x
 
 ###############################################################################################
 
-# dotnet clean
 
-sudo find ./ -type f \( -name "openapi.json" -o -name "aria.db" \) -exec rm -rf {} \;
-sudo find ./ -type d \( -name "bin" -o -name "obj" \) -exec rm -rf {} \;
+bash $WD/src/backend/clean.sh
+bash $WD/src/client/clean.sh

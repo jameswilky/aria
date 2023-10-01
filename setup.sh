@@ -14,13 +14,12 @@ set -x
 
 ###############################################################################################
 # Start local setup
-if [ -f "$WD/../../local/setup.sh" ] 
+if [ -f "$WD/local/setup.sh" ] 
 then
-    sh $WD/../../local/setup.sh
+    sh $WD/local/setup.sh
 else
     echo "No Local setup found"
 fi
 
 su - node -c "bash $WD/setup_zsh.sh"
-su - node -c "bash $WD/build.sh"
 
