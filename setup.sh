@@ -21,5 +21,5 @@ else
     echo "No Local setup found"
 fi
 
-su - node -c "bash $WD/setup_zsh.sh"
+su - vscode -c "bash $WD/setup_zsh.sh"
 
