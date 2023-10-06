@@ -16,10 +16,17 @@
       <PackageReference Include="NSwag.AspNetCore" Version="13.20.0" />
       <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.11" />
+      <PackageReference Include="OneOf" Version="3.0.263" />
+      <PackageReference Include="OneOf.Extended" Version="3.0.263" />
+      <PackageReference Include="OneOf.Linq" Version="2.0.0" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Aria.Database\Aria.Database.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="bin\Debug\net7.0\aria.db" />
     </ItemGroup>
 
 </Project>

@@ -1,13 +1,22 @@
 using Aria.Server.DTO.Actions;
 using Aria.Server.DTO.Models;
 using Aria.Server.Middleware;
-using Aria.Server.Services.UserService;
+using Aria.Server.Models.Errors;
+using Aria.Server.Services;
 using Microsoft.AspNetCore.Mvc;
+using OneOf.Linq;
+using OneOf.Types;
+using OneOf;
+
+public class TestClass
+{
+    
+}
 
 namespace Aria.Server.Controllers
 {
     [ApiController]
-    [Route("/user")]
+    [Route("/users")]
     public class UserController : ControllerBase
     {
         private readonly UserService _userService;
@@ -19,10 +28,16 @@ namespace Aria.Server.Controllers
 
         [HttpPost]
         [ProducesResponseType(201, Type = typeof(AuthenticatedUser))] // Needed for nswag to work correctly
-        public async Task<IActionResult> Create(RegisterUser request)
+        public async Task<IActionResult> Create(AddUser request)
         {
-            var authenticatedUser = await _userService.CreateUser(request);
-            return Created($"/users/{authenticatedUser.Id}", authenticatedUser);
+            var result = await _userService.CreateUser(request);
+
+            return result.Value switch
+            {
+                AuthenticatedUser authenticatedUser => Created($"/users/{authenticatedUser.Id}", authenticatedUser),
+                UserAlreadyExists => Conflict(),
+                _ => throw new Exception("Unhandled case")
+            };
         }
 
         [HttpGet("profile")]

@@ -1,21 +1,28 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Aria.Database.Contexts;
 using Aria.Database.Entities;
 using Aria.Server.DTO.Actions;
 using Aria.Server.DTO.Models;
+using Aria.Server.Models;
+using Aria.Server.Models.Errors;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using OneOf.Linq;
+using OneOf.Types;
+using OneOf;
+
 using BC = BCrypt.Net.BCrypt;
 
-namespace Aria.Server.Services.UserService
+namespace Aria.Server.Services
 {
     public class UserService
     {
-        private readonly AriaContext _db;
+        private readonly AriaDbContext _db;
         private readonly JwtSettings _jwt;
 
-        public UserService(AriaContext db, JwtSettings jwt)
+        public UserService(AriaDbContext db, JwtSettings jwt)
         {
             _db = db;
             _jwt = jwt;
@@ -56,8 +63,9 @@ namespace Aria.Server.Services.UserService
                 Token = token
             };
         }
-
-        public async Task<AuthenticatedUser> CreateUser(RegisterUser newUser)
+        
+       
+        public async Task<OneOf<AuthenticatedUser, UserAlreadyExists>> CreateUser(AddUser newUser)
         {
             var hashedPassword = BC.HashPassword(newUser.Password);
 
@@ -69,7 +77,14 @@ namespace Aria.Server.Services.UserService
             };
 
             _db.Users.Add(user);
-            await _db.SaveChangesAsync();
+            try
+            {
+                await _db.SaveChangesAsync();
+            }
+            catch (DbUpdateException e)
+            {
+                return new UserAlreadyExists(newUser,e);
+            }
 
             var token = GenerateToken(user.Id);
 

@@ -1,5 +1,5 @@
 using Aria.Server.DTO.Actions;
-using Aria.Server.Services.UserService;
+using Aria.Server.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Aria.Server.Controllers
@@ -15,7 +15,7 @@ namespace Aria.Server.Controllers
             _userService = userService;
         }
 
-        [HttpPost("signin")]
+        [HttpPost]
         public async Task<IActionResult> SignIn(AuthenticateUser request)
         {
             var authenticatedUser = await _userService.GetUser(request);

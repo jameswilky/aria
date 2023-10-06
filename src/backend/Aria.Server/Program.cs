@@ -1,16 +1,10 @@
 using Aria.Server;
+using Aria.Server.Configuration;
 
-internal class Program
-{
-    public static void Main(string[] args)
-    {
-        CreateHostBuilder(args).Build().Run();
-    }
-
-    public static IHostBuilder CreateHostBuilder(string[] args)
-    {
-        return Host.CreateDefaultBuilder(args)
-              .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
-    }
-
-}
+var builder = WebApplication.CreateBuilder(args);
+builder.AddDatabaseService();
+builder.AddServices();
+var app = builder.Build();
+app.UseMiddleware();
+app.InitializeDatabase();
+app.Run();
