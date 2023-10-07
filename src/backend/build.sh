@@ -19,5 +19,5 @@ dotnet tool restore
 bash $WD/Aria.Database/build.sh
 bash $WD/Aria.Server/build.sh
 bash $WD/Aria.Server.Tests/build.sh
+dotnet test --logger "trx;LogFileName=test-results.trx"
 
-dotnet test
