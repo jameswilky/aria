@@ -1,7 +1,10 @@
 FROM mcr.microsoft.com/devcontainers/base:bullseye AS base
 
+# ======== OS Setup =========
+
+# Create keyring for nodejs
 RUN mkdir -p /etc/apt/keyrings
-RUN url -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+RUN curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
 
 # Create debian repo for nodejs
 RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_18.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
@@ -32,6 +35,7 @@ RUN pnpm dlx playwright install-deps
 RUN apt-get install -y aspnetcore-runtime-7.0 dotnet-runtime-7.0 dotnet-sdk-7.0
 
 
+
 # ========= Buil agent =======
 FROM base as build_agent
 
@@ -43,7 +47,7 @@ USER agent
 
 
 # ======= Dev Container ===
-FROM base as dev_contaienr
+FROM base as dev_container
 
 ARG USERNAME=vscode
 
