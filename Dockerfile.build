@@ -35,7 +35,7 @@ RUN pnpm dlx playwright install-deps
 RUN apt-get install -y aspnetcore-runtime-7.0 dotnet-runtime-7.0 dotnet-sdk-7.0
 
 # Create a new user
-RUN agent myuser
+RUN useradd agent
 
 # Switch to the new user
 USER agent
