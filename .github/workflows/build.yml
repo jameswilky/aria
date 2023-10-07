@@ -51,7 +51,8 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: ./Dockerfile.build
+          file: ./Dockerfile
+          target: build_agent
           push: true
           tags: ${{ vars.DOCKER_IMAGE_REPO }}:build-${{ needs.get_git_info.outputs.branch }}
           # Cache the docker layers
