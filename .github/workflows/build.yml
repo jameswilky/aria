@@ -20,6 +20,10 @@ jobs:
     outputs:
       branch: ${{ steps.extract_branch.outputs.branch }}
     steps:
+      - name: Check ownership
+        run: |
+          ls -la /__w/aria/aria
+          
       - name: Checkout code
         uses: actions/checkout@v3
 
