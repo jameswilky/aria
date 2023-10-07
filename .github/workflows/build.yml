@@ -5,6 +5,8 @@ on:
     branches:
       - master
   workflow_dispatch: {}
+permissions:
+  checks: write
 
 jobs:
   get_git_info:
@@ -95,10 +97,11 @@ jobs:
 
       - name: Report Tests
         uses: dorny/test-reporter@v1
+
         with:
           artifact: test-results          
           name: Server Tests             
           path: '*.trx'                     
           reporter: dotnet-trx
           working-directory: ./src/backend
-
+        
