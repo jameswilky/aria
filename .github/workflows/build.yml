@@ -104,6 +104,6 @@ jobs:
         with:
           artifact: test-results          
           name: Server Tests             
-          path: './src/backend/Aria.Server.Tests/TestResults/test-results.trx'                     
+          path: '**/src/backend/Aria.Server.Tests/TestResults/test-results.trx'                     
           reporter: dotnet-trx
         
