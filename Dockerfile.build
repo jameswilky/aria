@@ -41,14 +41,14 @@ RUN useradd agent
 USER agent
 
 # ============= VSCode ==================
-ARG IS_VSCODE=true
-RUN if [ "$IS_VSCODE" = "false" ]; then exit 0; fi
+# ARG IS_VSCODE=true
+# RUN if [ "$IS_VSCODE" = "false" ]; then exit 0; fi
 
-ARG USERNAME=vscode
+# ARG USERNAME=vscode
 
-# Used to persist bash history as per https://code.visualstudio.com/remote/advancedcontainers/persist-bash-history
-RUN SNIPPET="export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhistory/.bash_history" \
-    && mkdir /commandhistory \
-    && touch /commandhistory/.bash_history \
-    && chown -R $USERNAME /commandhistory \
-    && echo "$SNIPPET" >> "/home/$USERNAME/.bashrc"
+# # Used to persist bash history as per https://code.visualstudio.com/remote/advancedcontainers/persist-bash-history
+# RUN SNIPPET="export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhistory/.bash_history" \
+#     && mkdir /commandhistory \
+#     && touch /commandhistory/.bash_history \
+#     && chown -R $USERNAME /commandhistory \
+#     && echo "$SNIPPET" >> "/home/$USERNAME/.bashrc"
