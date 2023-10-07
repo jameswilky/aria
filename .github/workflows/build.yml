@@ -57,8 +57,6 @@ jobs:
           # Cache the docker layers
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          build-args: |
-            IS_VSCODE=false
 
   # Build the app using the docker image we just built, or using a cached one.
   build_app:
@@ -74,8 +72,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-        
 
       # Cache items in the node modules folder, update cache if the packages lock file changes
       # This means that if the lock file does not change, then we will copy the cached node modules folder
@@ -104,8 +100,7 @@ jobs:
       - name: Test
         run: dotnet test --logger "trx;LogFileName=test-results.trx"
         working-directory: ./src/backend
-      
-      - run: tree -pufi
+    
 
       - name: Report Tests
         uses: dorny/test-reporter@v1
