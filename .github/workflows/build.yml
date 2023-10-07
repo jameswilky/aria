@@ -72,6 +72,16 @@ jobs:
         password: ${{ secrets.DOCKER_HUB_AUTH_TOKEN }}
 
     steps:
+            
+      - run: tree -pufi
+      - name: Create new user and run commands
+        run: |
+          useradd myuser
+          # Optionally set a password
+          # echo "password" | passwd myuser --stdin
+          sudo -u myuser command_to_run
+        
+      - run: tree -pufi
       - name: Checkout code
         uses: actions/checkout@v4
 
