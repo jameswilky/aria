@@ -88,3 +88,17 @@ jobs:
 
       - name: Build
         run: bash ./build.sh
+      
+      - name: Test
+        run: dotnet test --logger "trx;LogFileName=test-results.trx"
+        working-directory: ./src/backend
+
+      - name: Report Tests
+        uses: dorny/test-reporter@v1
+        with:
+          artifact: test-results          
+          name: Server Tests             
+          path: '*.trx'                     
+          reporter: dotnet-trx
+          working-directory: ./src/backend
+
