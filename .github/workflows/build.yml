@@ -6,7 +6,11 @@ on:
       - master
   workflow_dispatch: {}
 permissions:
+  statuses: write
   checks: write
+  contents: write
+  pull-requests: write
+  actions: write
 
 jobs:
   get_git_info:
