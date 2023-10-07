@@ -22,8 +22,8 @@ jobs:
     steps:
       - name: Check ownership
         run: |
-          ls -la /__w/aria/aria
-          
+          ls -la ./aria/aria
+
       - name: Checkout code
         uses: actions/checkout@v3
 
