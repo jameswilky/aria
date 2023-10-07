@@ -11,6 +11,8 @@ permissions:
   contents: write
   pull-requests: write
   actions: write
+  id-token: write
+
 
 jobs:
   get_git_info:
