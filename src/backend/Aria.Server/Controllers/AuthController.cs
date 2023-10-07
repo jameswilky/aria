@@ -23,7 +23,8 @@ namespace Aria.Server.Controllers
             {
                 return Ok(authenticatedUser);
             }
-            return BadRequest(new { message = "Invalid username or password" });
+
+            return Unauthorized();
         }
     }
 }
