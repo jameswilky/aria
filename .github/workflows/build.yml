@@ -107,5 +107,5 @@ jobs:
           name: Server Tests             
           path: '*.trx'                     
           reporter: dotnet-trx
-          working-directory: ./src/backend
+          working-directory: ./src/backend/Aria.Server.Tests/TestResults
         
