@@ -20,12 +20,10 @@ jobs:
     outputs:
       branch: ${{ steps.extract_branch.outputs.branch }}
     steps:
-      - name: Check ownership
-        run: |
-          ls -la ./
-
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - run: tree -pufi
 
       - name: Get branch name
         id: extract_branch
