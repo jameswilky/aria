@@ -34,8 +34,13 @@ RUN pnpm dlx playwright install-deps
 # .net
 RUN apt-get install -y aspnetcore-runtime-7.0 dotnet-runtime-7.0 dotnet-sdk-7.0
 
-# ============= VSCode ==================
+# Create a new user
+RUN agent myuser
 
+# Switch to the new user
+USER agent
+
+# ============= VSCode ==================
 ARG IS_VSCODE=true
 RUN if [ "$IS_VSCODE" = "false" ]; then exit 0; fi
 
