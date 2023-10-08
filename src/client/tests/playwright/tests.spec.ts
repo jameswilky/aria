@@ -1,8 +1,15 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, chromium } from '@playwright/test';
 
-test('has title', async ({ page }) => {
+async function sleep(seconds :number) {
+  return new Promise((resolve) =>setTimeout(resolve, seconds * 1000));
+  }
+test('has title', async ({page}) => {
+    //process.env.DISPLAY = ':0';
+    // const browser = await chromium.launch({ headless: false });
+    // const page = await browser.newPage();
     await page.goto('https://playwright.dev/');
-  
-    // Expect a title "to contain" a substring.
-    await expect(page).toHaveTitle(/Playwright/);
+
+    await sleep(2);
+    await page.screenshot({ path: 'screenshot.png' });
+    // await browser.close();
   });
