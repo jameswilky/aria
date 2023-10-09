@@ -1,10 +1,20 @@
 import { sveltekit } from '@sveltejs/kit/vite';
-import { defineConfig } from 'vitest/config';
+import { nodeLoaderPlugin } from '@vavite/node-loader/plugin';
+import { defineConfig } from 'vite';
 
-export default defineConfig({
-	plugins: [sveltekit()],
-	test: {
-		include: ['src/**/*.{test,spec}.{js,ts}', 'tests/**/*.{test,spec}.{js,ts}'],
-		exclude: ['tests/playwright/**/*.{test,spec}.{js,ts}'] 
-	}
+/** @type {import('vite').UserConfig} */
+export default defineConfig(({ mode }) => {
+    let plugins = [sveltekit()];
+    if (mode === 'development') {
+        plugins = [nodeLoaderPlugin(), ...plugins];
+    }
+
+    return {
+        // ... your code ...
+        plugins,
+		test: {
+			include: ['src/**/*.{test,spec}.{js,ts}', 'tests/**/*.{test,spec}.{js,ts}'],
+			exclude: ['tests/playwright/**/*.{test,spec}.{js,ts}'] 
+		}
+    };
 });

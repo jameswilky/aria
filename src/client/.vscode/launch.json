@@ -1,37 +1,24 @@
 {
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "name": "Debug SvelteKit Server",
-      "request": "launch",
-      "runtimeArgs": [
-        "run-script",
-        "dev"
-      ],
-      "runtimeExecutable": "npm",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
-      "type": "node",
-      "console": "integratedTerminal",
-      "cwd": "${workspaceFolder}/src/client"
-    },
-    {
-      "name": "Debug Chrome",
-      "type": "chrome",
-      "request": "launch",
-      "url": "http://localhost:5173",
-      "webRoot": "${workspaceFolder}"
-    }
-  ],
-  "compounds": [
-    {
-      // Seems to run very slowly, atleast on startup
-      "name": "Debug Server and Client",
-      "configurations": [
-        "Debug SvelteKit Server",
-        "Debug Chrome"
-      ]
-    }
-  ]
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"command": "pnpm vavite-loader vite dev --port 5173",
+            "name": "Launch SvelteKit server",
+            "request": "launch",
+            "type": "node-terminal"
+		},
+		{
+			"type": "chrome",
+			"request": "launch",
+			"name": "Launch Chrome",
+			"url": "http://127.0.0.1:5173",
+			"webRoot": "${workspaceFolder}"
+		}
+	],
+	"compounds": [
+		{
+			"name": "Both",
+			"configurations": ["Launch SvelteKit server", "Launch Chrome"]
+		}
+	]
 }
