@@ -1,6 +1,6 @@
 import type { PageServerLoad, Actions } from "./$types";
-import { fail, redirect } from "@sveltejs/kit";
-import { superValidate } from "sveltekit-superforms/server";
+import { redirect } from "@sveltejs/kit";
+import { superValidate, message } from "sveltekit-superforms/server";
 import { formSchema } from "./schema";
 import { createUser } from "$lib/server/aria/aria";
 
@@ -11,16 +11,13 @@ export const load: PageServerLoad = () => {
 };
 
 export const actions: Actions = {
-  default: async (event) => {
-    console.log("test")
+  default: async (event) => {    
     const form = await superValidate(event, formSchema);
     if (!form.valid) {
-      return fail(400, {
-        form
-      });
+      return message(form, 'Account details were invalid, please try again');
     }
     const result = await createUser(form.data);
-    if (!result.success) return fail(500, { form });
+    if (!result.success)  return message(form, "Oops, something went wrong.", {status: 500})
     const user = result.value;
 
     event.cookies.set('AuthorizationToken', `Bearer ${user.token}`, {

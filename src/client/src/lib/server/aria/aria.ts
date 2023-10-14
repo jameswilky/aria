@@ -9,7 +9,7 @@ type AriaResult<T> =
     | { success: true; value: T }
     | { success: false; error: unknown };
 
-const BASE_URI: string = "http://127.0.0.1:5156";
+const BASE_URI: string = "http://host.docker.internal:5156";
 
 const error = (error: unknown): { success: false, error: unknown } => { return { success: false, error } }
 

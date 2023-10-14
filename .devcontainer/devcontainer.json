@@ -88,7 +88,10 @@
   // If using a wakatimeserver, need to remove this and deploy to AWS or something
   "runArgs": [
     "--network=wakatime",
-    "-e", "DISPLAY=unix:0",
-    "-v", "/tmp/.X11-unix:/tmp/.X11-unix"
+    "--add-host=host.docker.internal:host-gateway",
+    "-e",
+    "DISPLAY=unix:0",
+    "-v",
+    "/tmp/.X11-unix:/tmp/.X11-unix"
   ]
 }

@@ -14,6 +14,11 @@
   <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.11" />
   <PackageReference Include="NSwag.AspNetCore" Version="13.20.0" />
 </ItemGroup>
+  <ItemGroup>
+    <None Update="tables.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 
 
 </Project>

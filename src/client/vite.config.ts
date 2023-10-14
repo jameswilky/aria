@@ -14,7 +14,7 @@ export default defineConfig(({ mode }) => {
         plugins,
 		test: {
 			include: ['src/**/*.{test,spec}.{js,ts}', 'tests/**/*.{test,spec}.{js,ts}'],
-			exclude: ['tests/playwright/**/*.{test,spec}.{js,ts}'] 
+			exclude: ['tests/playwright/**/*.{test,spec}.{js,ts}','src/tests/playwright/**/*.{test,spec}.{js,ts}' ] 
 		}
     };
 });

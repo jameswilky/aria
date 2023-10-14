@@ -47,7 +47,7 @@ public static class WebApplicationExtensions
             var context = services.GetRequiredService<AriaDbContext>();
             var connection = context.Database.GetDbConnection();
             connection.Open();
-            var script = File.ReadAllText("./../../../../Aria.Database/tables.sql");
+            var script = File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "./tables.sql"));
             context.Database.ExecuteSqlRaw(script);
         }
         return app;

@@ -20,7 +20,7 @@ RUN apt-get update && apt-get upgrade -y $$
 # ============ Software ============
 
 # utilities
-RUN apt-get install -y curl gnupg wget git bash tree 
+RUN apt-get install -y curl gnupg wget git bash tree netcat iputils-ping
 
 # sqlite
 RUN apt-get install -y sqlite3 libsqlite3-dev
