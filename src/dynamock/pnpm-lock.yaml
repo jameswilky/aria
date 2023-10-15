@@ -14,6 +14,9 @@ dependencies:
   node-fetch:
     specifier: ^3.3.2
     version: 3.3.2
+  odata-filter-parser:
+    specifier: ^0.5.2
+    version: 0.5.2
   uuid:
     specifier: ^9.0.1
     version: 9.0.1
@@ -990,6 +993,10 @@ packages:
 
   /object-inspect@1.12.3:
     resolution: {integrity: sha512-geUvdk7c+eizMNUDkRpW1wJwgfOiOeHbxBR/hLXK1aT6zmVSO0jsQcs7fj6MGw89jC/cjGfLcNOrtMYtGqm81g==}
+    dev: false
+
+  /odata-filter-parser@0.5.2:
+    resolution: {integrity: sha512-FOAgfa6CJdOekg8bceDx8Eb1TQSH6kMIfo9eXMfJ7W/8iMMyTwdwM5h+ZusPHGhFa3h1w4aTYFmS6ah7tm7pfg==}
     dev: false
 
   /on-finished@2.4.1:
