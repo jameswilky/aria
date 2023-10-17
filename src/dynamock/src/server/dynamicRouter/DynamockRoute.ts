@@ -10,7 +10,7 @@ export class DynamockRoute {
     this.proxy = proxy;
   }
 
-  public handle(req: Request, res: Response): boolean {
-    return false;
+  public handle(req: Request, res: Response) {
+    res.status(this.proxy.status).send(this.proxy.body);
   }
 }

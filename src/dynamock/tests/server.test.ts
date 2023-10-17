@@ -11,8 +11,7 @@ describe("Happy paths", () => {
     // Arrange
     const client = dynamockClient({
       host,
-      headerIdKey,
-      headerIdValue: (id) => `Bearer ${id}`,
+      idHeader: { key: headerIdKey, value: (id) => `Bearer ${id}` },
     });
 
     const locator: Locator = { url: "/friends", method: "GET" };
@@ -20,7 +19,6 @@ describe("Happy paths", () => {
       body: {
         users: ["john", "jane"],
       },
-      heaaders: { headerKey: client.id },
       status: 200,
     };
 
@@ -28,6 +26,7 @@ describe("Happy paths", () => {
     client.intercept(locator, proxy);
     const res = await fetch(`${host}${locator.url}`, {
       method: locator.method,
+      headers: { [headerIdKey]: `Bearer ${client.id}` },
     });
 
     // Assert

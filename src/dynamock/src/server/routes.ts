@@ -2,8 +2,8 @@ import express, { Request, Response } from "express";
 
 export function setupRoutes(app: express.Express) {
   app.post("/_set-response", async (req: Request, res: Response) => {
-    const { locator, proxy, clientId } = req.body;
-    req.dynamock.addRoute(locator, proxy, clientId);
+    const { locator, proxy, idHeader } = req.body;
+    req.dynamock.addRoute(locator, proxy, idHeader);
     console.log("_set-response");
   });
 

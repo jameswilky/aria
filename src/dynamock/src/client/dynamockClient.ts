@@ -10,8 +10,7 @@ interface DynamockClientConfig {
    * Used to point to the currently running dynamock server
    */
   host: string;
-  headerIdKey: string;
-  headerIdValue?: (value: string) => string;
+  idHeader: { key: string; value: (key: string) => string };
 }
 
 export function dynamockClient(config: DynamockClientConfig) {
@@ -22,11 +21,15 @@ export function dynamockClient(config: DynamockClientConfig) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        headerKey: id,
+        [`${config.idHeader.key}`]: config.idHeader.value(id),
       },
       body: JSON.stringify({
         locator,
         proxy,
+        idHeader: {
+          key: config.idHeader.key,
+          value: config.idHeader.value(id),
+        },
       }),
     });
 
