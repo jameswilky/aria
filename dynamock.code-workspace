@@ -25,5 +25,23 @@
       "titleBar.inactiveBackground": "#42b88399",
       "titleBar.inactiveForeground": "#15202b99"
     }
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Debug Server",
+        "type": "node",
+        "request": "launch",
+        "runtimeExecutable": "node",
+        "runtimeArgs": ["--nolazy", "-r", "ts-node/register/transpile-only"],
+
+        "args": ["./index.ts", "-p", "4000"],
+        
+        "cwd": "${workspaceRoot}/src/server",
+        "internalConsoleOptions": "openOnSessionStart",
+        "skipFiles": ["<node_internals>/**", "node_modules/**"]
+      }
+    ]
   }
 }

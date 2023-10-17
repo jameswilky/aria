@@ -56,7 +56,8 @@
         "timonwong.shellcheck",
         "robertz.code-snapshot",
         // Personal overrides
-        "wakatime.vscode-wakatime"
+        "wakatime.vscode-wakatime",
+        "github.copilot-chat"
       ],
       "settings": {
         "editor.tabSize": 4,
