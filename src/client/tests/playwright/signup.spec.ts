@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('Sign up new user', async ({ page }) => {
+test('Sign up new user that does not exist', async ({ page }) => {
 	const user = 'john';
 
 	// Act
