@@ -1,4 +1,5 @@
 using Aria.Server.DTO.Actions;
+using Aria.Server.DTO.Models;
 using Aria.Server.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,6 +17,8 @@ namespace Aria.Server.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(200, Type = typeof(AuthenticatedUser))]
+        [ProducesResponseType(401)]
         public async Task<IActionResult> SignIn(AuthenticateUser request)
         {
             var authenticatedUser = await _userService.GetUser(request);

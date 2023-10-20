@@ -17,7 +17,10 @@ export const actions: Actions = {
 			return message(form, 'Account details were invalid, please try again');
 		}
 		const result = await createUser(form.data);
-		if (!result.success) return message(form, 'Oops, something went wrong.', { status: 500 });
+		if (!result.success) {
+			console.log(result.error);
+			return message(form, 'Oops, something went wrong.', { status: 500 });
+		}
 		const user = result.value;
 
 		event.cookies.set('AuthorizationToken', `Bearer ${user.token}`, {
