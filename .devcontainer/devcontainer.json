@@ -57,7 +57,8 @@
         "robertz.code-snapshot",
         // Personal overrides
         "wakatime.vscode-wakatime",
-        "github.copilot-chat"
+        "github.copilot-chat",
+        "pomdtr.excalidraw-editor"
       ],
       "settings": {
         "editor.tabSize": 4,
