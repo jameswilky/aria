@@ -1,12 +1,12 @@
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
 
-import {Profile} from "$lib/server/aria/aria.generated"
+import { Profile } from '$lib/server/backend-interface';
 declare global {
 	namespace App {
 		// interface Error {}
 		interface Locals {
-			profile : Profile
+			profile: Profile;
 		}
 		// interface PageData {}
 		// interface Platform {}

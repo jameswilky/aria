@@ -1,5 +1,5 @@
 // TODO https://www.okupter.com/blog/handling-auth-with-jwt-in-sveltekit
-import { getProfile } from '$lib/server/aria/aria';
+import { getProfile } from '$lib/server/backend-interface';
 import type { Handle } from '@sveltejs/kit';
 
 export const handle: Handle = async ({ event, resolve }) => {

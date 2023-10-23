@@ -4,6 +4,9 @@
       "path": "src/client"
     },
     {
+      "path": "src/backend-interface"
+    },
+    {
       "path": ".devcontainer"
     },
     {

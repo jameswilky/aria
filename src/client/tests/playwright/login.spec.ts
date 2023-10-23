@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { createUser } from '../../src/lib/server/aria/aria';
+import { createUser } from '../helpers/backend-interface';
 
 test('User that exists can login', async ({ page }) => {
 	// Arrange

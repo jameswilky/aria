@@ -2,7 +2,7 @@ import type { PageServerLoad, Actions } from './$types';
 import { fail, redirect } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms/server';
 import { formSchema } from './schema';
-import { getProfile, login } from '$lib/server/aria/aria';
+import { getProfile, login } from '$lib/server/backend-interface';
 export const load: PageServerLoad = () => {
 	return {
 		form: superValidate(formSchema)

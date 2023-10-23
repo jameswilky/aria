@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Profile } from '$lib/server/aria/aria.generated';
+	import type { Profile } from '$lib/server/backend-interface';
 
 	export let profile: Profile;
 </script>
