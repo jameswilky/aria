@@ -33,7 +33,7 @@ RUN npx playwright install-deps
 # .net
 RUN apt-get install -y aspnetcore-runtime-7.0 dotnet-runtime-7.0 dotnet-sdk-7.0
 
-# ========= Buil agent =======
+# ========= Build agent =======
 FROM base as build_agent
 
 # Create a new user

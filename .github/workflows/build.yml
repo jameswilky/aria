@@ -98,12 +98,15 @@ jobs:
       - name: Build
         run: bash ./build.sh
       
-      - name: Test
+      - name: Test Backend
         run: dotnet test --logger "trx;LogFileName=test-results.trx"
         working-directory: ./src/backend
     
+      - name: Test Frontend
+        run: pnpm test:integration
+        working-directory: ./src/client
 
-      - name: Report Tests
+      - name: Report Aria.Server Tests
         uses: dorny/test-reporter@v1
         with:
           name: Server Tests             

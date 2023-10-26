@@ -23,7 +23,8 @@ const config: PlaywrightTestConfig = {
 				}
 			}
 		}
-	]
+	],
+	reporter: 'github'
 };
 
 export default config;
