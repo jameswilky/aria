@@ -1,23 +1,20 @@
 import { test, expect } from '@playwright/test';
 import { createUser } from '../helpers/backend-interface';
+import { nextUser } from '../helpers/data-generator';
+import { LoginPage } from '../helpers/pages/LoginPage';
+import { DashboardPage } from '../helpers/pages/DashboardPage';
 
 test('User that exists can login', async ({ page }) => {
 	// Arrange
-	const username = 'alice';
-	const email = 'alice@gmail.com';
-	const password = 'alice1234';
-	await createUser({ username, email, password });
+	const user = nextUser();
+	await createUser(user);
+	const loginPage = new LoginPage(page);
+	const dashboardPage = new DashboardPage(page, user);
 
 	// Act
-	await page.goto('/');
-	await page.getByRole('link', { name: 'Login' }).click();
-	await page.getByLabel('Username').click();
-	await page.getByLabel('Username').fill(`${username}`);
-	await page.getByLabel('Password').click();
-	await page.getByLabel('Password').fill(`${password}`);
-	await page.getByRole('button', { name: 'Continue' }).click();
+	loginPage.login(user);
 
 	// Assert
-	await expect(page).toHaveURL('/dashboard');
-	await expect(page.getByText(`Hello, ${username}`)).toBeVisible();
+	await expect(dashboardPage.page).toHaveURL(dashboardPage.route);
+	await expect(dashboardPage.getBanner()).toBeVisible();
 });

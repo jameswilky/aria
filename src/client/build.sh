@@ -16,5 +16,6 @@ set -x
 
 # Install node packages
 pnpm install 
+npx playwright install
 pnpm build
 

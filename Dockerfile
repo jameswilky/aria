@@ -28,9 +28,7 @@ RUN apt-get install -y sqlite3 libsqlite3-dev
 # node
 RUN apt-get install -y nodejs
 RUN npm install -g pnpm
-RUN pnpm dlx playwright install
-RUN pnpm dlx playwright install-deps
-#RUN apt-get install -y xvfb x11vnc tigervnc-standalone-server xauth tigervnc-scraping-server xauth
+RUN npx playwright install-deps
 
 # .net
 RUN apt-get install -y aspnetcore-runtime-7.0 dotnet-runtime-7.0 dotnet-sdk-7.0
