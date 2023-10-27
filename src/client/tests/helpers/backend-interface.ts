@@ -5,5 +5,5 @@ export * from '../../../backend-interface/ariaClient.generated';
 export * from '../../../backend-interface/ariaClient.types';
 
 export const { createUser, getProfile, login } = createAriaClient(
-	process.env.ARIA_CLIENT_URL || ''
+	process.env.ARIA_SERVER_URL || ''
 );

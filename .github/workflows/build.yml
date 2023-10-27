@@ -57,7 +57,7 @@ jobs:
           tags: ${{ vars.DOCKER_IMAGE_REPO }}:build-${{ needs.get_git_info.outputs.branch }}
           # Cache the docker layers
           cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-to: type=gha,mode=max    
 
   # Build the app using the docker image we just built, or using a cached one.
   build_app:
@@ -73,6 +73,16 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      # Create the env file
+      - name: Make envfile
+        uses: SpicyPizza/create-envfile@v2.0
+        with: 
+          envkey_ARIA_SERVER_URL: "http://localhost:5156"
+          directory: ./src/client
+          file_name: .env
+          fail_on_empty: false
+          sort_keys: false
 
       # Cache items in the node modules folder, update cache if the packages lock file changes
       # This means that if the lock file does not change, then we will copy the cached node modules folder
