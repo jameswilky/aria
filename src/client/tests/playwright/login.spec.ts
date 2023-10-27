@@ -15,6 +15,6 @@ test('User that exists can login', async ({ page }) => {
 	loginPage.login(user);
 
 	// Assert
-	await expect(dashboardPage.page).toHaveURL(dashboardPage.route);
+	await expect(dashboardPage.page).toHaveURL('poo');
 	await expect(dashboardPage.getBanner()).toBeVisible();
 });
