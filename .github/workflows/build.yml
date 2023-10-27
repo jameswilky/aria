@@ -13,7 +13,6 @@ permissions:
   actions: write
   id-token: write
 
-
 jobs:
   get_git_info:
     runs-on: ubuntu-latest
@@ -102,7 +101,7 @@ jobs:
       - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
         name: List the state of node modules
         continue-on-error: true
-        run: npm list
+        run: npm list || true
         working-directory: ./src/client
 
       - name: Build
