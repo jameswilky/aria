@@ -14,7 +14,7 @@ test('Sign up new user that does not exist', async ({ page }) => {
 	signupPage.signup(user);
 
 	// Assert
-	await expect(dashboardPage.page).toHaveURL(dashboardPage.route);
+	await expect(page).toHaveURL(dashboardPage.route);
 	await expect(dashboardPage.getBanner()).toBeVisible();
 });
 
@@ -23,40 +23,35 @@ test('User that already exists cannot signup again', async ({ page }) => {
 	const user = nextUser();
 	await createUser(user);
 	const signupPage = new SignupPage(page);
-	const dashboardPage = new DashboardPage(page, user);
 
 	// Act
 	signupPage.signup(user);
 
-	await expect(dashboardPage.page.getByText('Oops, something went wrong.')).toBeVisible();
+	await expect(page.getByText('Oops, something went wrong.')).toBeVisible();
 });
 
 test('User that that sends invalid email input cannot signup', async ({ page }) => {
 	// Arrange
 	const user = nextUser();
 	const signupPage = new SignupPage(page);
-	const dashboardPage = new DashboardPage(page, user);
 	user.email = 'invalid';
 
 	// Act
 	signupPage.signup(user);
 
 	// Assert
-	await expect(dashboardPage.page.getByText('Invalid email')).toBeVisible();
+	await expect(page.getByText('Invalid email')).toBeVisible();
 });
 
 test('User that that sends invalid password input cannot signup', async ({ page }) => {
 	// Arrange
 	const user = nextUser();
 	const signupPage = new SignupPage(page);
-	const dashboardPage = new DashboardPage(page, user);
 	user.password = '123';
 
 	// Act
 	signupPage.signup(user);
 
 	// Assert
-	await expect(
-		dashboardPage.page.getByText('String must contain at least 8 character(s)')
-	).toBeVisible();
+	await expect(page.getByText('String must contain at least 8 character(s)')).toBeVisible();
 });

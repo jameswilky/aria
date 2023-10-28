@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as Form from '$lib/components/ui/form';
-	import { formSchema, type FormSchema } from './schema';
+	import { formSchema } from './schema';
 	import * as Card from '$lib/components/ui/card';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import { superForm } from 'sveltekit-superforms/client';

@@ -1,4 +1,4 @@
-import type { Page } from '@playwright/test';
+import { expect, type Page } from '@playwright/test';
 import type { IAddUser } from '../backend-interface';
 
 export class LoginPage {
@@ -16,6 +16,8 @@ export class LoginPage {
 		await this.page.getByLabel('Username').fill(`${user.username}`);
 		await this.page.getByLabel('Password').click();
 		await this.page.getByLabel('Password').fill(`${user.password}`);
-		await this.page.getByRole('button', { name: 'Continue' }).click();
+		var continueButtonLocator = this.page.getByRole('button', { name: 'Continue' });
+		await expect(continueButtonLocator).toBeVisible();
+		await continueButtonLocator.click();
 	}
 }
