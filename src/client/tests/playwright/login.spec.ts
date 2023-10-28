@@ -15,6 +15,9 @@ test('User that exists can login', async ({ page }) => {
 	loginPage.login(user);
 
 	// Assert
-	await expect(dashboardPage.page).toHaveURL('poo');
+	await expect(dashboardPage.page).toHaveURL(dashboardPage.route);
 	await expect(dashboardPage.getBanner()).toBeVisible();
 });
+
+test('User that does not exist cannot login', async ({ page }) => {});
+test('User that exists, but has invalid credentials cannot login', async ({ page }) => {});
