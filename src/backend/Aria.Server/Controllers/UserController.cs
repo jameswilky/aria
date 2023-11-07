@@ -25,7 +25,7 @@ namespace Aria.Server.Controllers
         {
             _userService = userService;
         }
-
+ 
         [HttpPost]
         [ProducesResponseType(201, Type = typeof(AuthenticatedUser))] // Needed for nswag to work correctly
         public async Task<IActionResult> Create(AddUser request)
