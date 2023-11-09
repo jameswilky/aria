@@ -42,6 +42,9 @@
 		<p class="text-center">
 			Dont have an account? <a class="underline" href="/auth/signup"> Sign Up</a>
 		</p>
+		<p class="text-center">
+			Or just contiue as a <a class="underline" href="/dashboard">Guest</a>
+		</p>
 	</Card.Content>
 	<Card.Footer class="flex justify-between" />
 </Card.Root>

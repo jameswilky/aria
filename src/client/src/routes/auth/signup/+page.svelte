@@ -50,6 +50,9 @@
 		<p class="text-center">
 			Already have an account? <a class="underline" href="/auth/login"> Log In</a>
 		</p>
+		<p class="text-center">
+			Or just contiue as a <a class="underline" href="/dashboard">Guest</a>
+		</p>
 	</Card.Content>
 	<Card.Footer class="flex justify-between" />
 </Card.Root>

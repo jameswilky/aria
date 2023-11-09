@@ -13,14 +13,15 @@
 		<Card.Root class="w-[350px]">
 			<Card.Header>
 				<Card.Title>Get Started</Card.Title>
-				<Card.Description
-					>Sign up to create and manage your own autonomous AI agents</Card.Description
-				>
+				<Card.Description>
+					Sign up to create and manage your own autonomous AI agents.
+				</Card.Description>
 			</Card.Header>
 			<Card.Content />
 			<Card.Footer class="flex justify-between">
 				<Button variant="outline" href="/auth/login">Login</Button>
-				<Button variant="secondary" href="/auth/signup">Signup</Button>
+				<Button variant="outline" href="/auth/signup">Signup</Button>
+				<Button variant="secondary" href="/dashboard">Skip</Button>
 			</Card.Footer>
 		</Card.Root>
 	</div>
