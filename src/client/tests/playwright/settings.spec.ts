@@ -1,25 +1,55 @@
 import { test, expect } from '@playwright/test';
 import { DashboardPage } from '../helpers/pages/DashboardPage';
 
+function delay(ms: number) {
+	return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 test('User can enter API Keys, which will be persisted across sessions', async ({ page }) => {
 	// Arrange
 	const dashboardPage = new DashboardPage(page);
 
-	await page.goto('http://127.0.0.1:5173/dashboard');
-	await page.getByRole('button', { name: 'Settings' }).click();
-	await page.goto('http://127.0.0.1:5173/dashboard');
-	await page.getByRole('button', { name: 'Settings' }).click();
-	await page.locator('#github_key').click();
-	await page.locator('#github_key').fill('12345');
-	await page.locator('#openai_key').click();
-	await page.locator('#openai_key').fill('12345');
-	await page.getByRole('button', { name: 'Save changes' }).click();
-	await page.getByRole('button', { name: 'Settings' }).click();
-	await page.locator('#github_key').click();
-	await page.locator('#openai_key').click();
-	await page.getByRole('button', { name: 'Close' }).click();
+	// Act
+	await dashboardPage.goTo();
+	await dashboardPage.openSettings();
+	await dashboardPage.enterGithubApiKey('12345');
+	await dashboardPage.enterOpenAiApiKey('67890');
+	await dashboardPage.saveChanges();
+	await dashboardPage.goTo(); // Refresh page
+	await dashboardPage.openSettings();
+	const githubApiKey = await dashboardPage.githubApiKeyInput().inputValue();
+	const openAIApiKey = await dashboardPage.openAIApiKeyInput().inputValue();
+
+	// Assert
+	await expect(githubApiKey).toBe('12345');
+	await expect(openAIApiKey).toBe('67890');
 });
-test('User will be prompted if they try to close without saving', async ({ page }) => {});
 test('Users changes wont be saved if they confirm in the alert that its ok to continue', async ({
 	page
-}) => {});
+}) => {
+	// Arrange
+	const dashboardPage = new DashboardPage(page);
+
+	let dialogDismissed = new Promise<void>((resolve) => {
+		page.on('dialog', async (dialog) => {
+			await dialog.dismiss();
+			await delay(2000); // Need to wait for alert events to be processed
+			resolve();
+		});
+	});
+
+	// Act
+	await dashboardPage.goTo();
+	await dashboardPage.openSettings();
+	await dashboardPage.enterGithubApiKey('12345');
+	await dashboardPage.enterOpenAiApiKey('67890');
+	await dashboardPage.closeSettings();
+	await dialogDismissed;
+	await dashboardPage.openSettings();
+	const githubApiKey = await dashboardPage.githubApiKeyInput().inputValue();
+	const openAIApiKey = await dashboardPage.openAIApiKeyInput().inputValue();
+
+	// Assert
+	await expect(githubApiKey).toBe('');
+	await expect(openAIApiKey).toBe('');
+});

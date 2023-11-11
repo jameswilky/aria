@@ -39,11 +39,11 @@
 			</div>
 		</Form.Root>
 		<Separator class="my-2 " />
-		<p class="text-center">
+		<p class="text-center text-m">
 			Dont have an account? <a class="underline" href="/auth/signup"> Sign Up</a>
 		</p>
-		<p class="text-center">
-			Or just contiue as a <a class="underline" href="/dashboard">Guest</a>
+		<p class="text-center text-xs">
+			Or just continue as a <a class="underline" href="/dashboard">guest</a>
 		</p>
 	</Card.Content>
 	<Card.Footer class="flex justify-between" />

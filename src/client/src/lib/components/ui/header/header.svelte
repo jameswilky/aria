@@ -15,7 +15,7 @@
 					{#if profile}
 						Hello, {profile.username}
 					{:else}
-						Sign in
+						<a href="/auth/login">Sign in</a>
 					{/if}
 				</div>
 			</div>
