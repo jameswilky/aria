@@ -5,7 +5,7 @@ const config: PlaywrightTestConfig = {
 		command: 'bash ./start_test_server.sh',
 		port: 4173
 
-		// For using with debugger
+		// For using when debugging the server and getting faster startup times
 		//reuseExistingServer: true
 		// port:5173
 	},
