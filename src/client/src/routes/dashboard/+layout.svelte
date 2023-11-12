@@ -40,49 +40,52 @@
 </script>
 
 <Header profile={data.profile} />
-<Sidebar>
-	<Dialog.Root
-		slot="settings"
-		bind:open={dialogOpen}
-		closeOnOutsideClick={false}
-		onOpenChange={(open) => openStateChanged(open)}
-	>
-		<Dialog.Trigger class="flex items-center space-x-3 text-m font-medium">
-			<SettingsIcon />
-			<span>Settings</span></Dialog.Trigger
+
+<div class="flex pt-16 h-screen">
+	<Sidebar>
+		<Dialog.Root
+			slot="settings"
+			bind:open={dialogOpen}
+			closeOnOutsideClick={false}
+			onOpenChange={(open) => openStateChanged(open)}
 		>
-		<Dialog.Content class="sm:max-w-[600px]" on:closeButtonClicked={closeButtonClicked}>
-			<Dialog.Header>
-				<Dialog.Title>Settings</Dialog.Title>
-				<Dialog.Description>
-					Supply the required API Keys here. None of this data is EVER sent to on our servers, its
-					all stored locally in your browser.
-				</Dialog.Description>
-			</Dialog.Header>
-			<div class="grid gap-4 py-4">
-				<div class="grid grid-cols-4 items-center gap-4">
-					<Label class="text-right">Github API Key</Label>
-					<Input
-						type="password"
-						id="github_key"
-						bind:value={settings.githubApiKey}
-						class="col-span-3"
-					/>
+			<Dialog.Trigger class="flex items-center space-x-3 text-m font-medium">
+				<SettingsIcon />
+				<span>Settings</span></Dialog.Trigger
+			>
+			<Dialog.Content class="sm:max-w-[600px]" on:closeButtonClicked={closeButtonClicked}>
+				<Dialog.Header>
+					<Dialog.Title>Settings</Dialog.Title>
+					<Dialog.Description>
+						Supply the required API Keys here. None of this data is EVER sent to on our servers, its
+						all stored locally in your browser.
+					</Dialog.Description>
+				</Dialog.Header>
+				<div class="grid gap-4 py-4">
+					<div class="grid grid-cols-4 items-center gap-4">
+						<Label class="text-right">Github API Key</Label>
+						<Input
+							type="password"
+							id="github_key"
+							bind:value={settings.githubApiKey}
+							class="col-span-3"
+						/>
+					</div>
+					<div class="grid grid-cols-4 items-center gap-4">
+						<Label class="text-right">OpenAI API Key</Label>
+						<Input
+							type="password"
+							id="openai_key"
+							bind:value={settings.openAiApiKey}
+							class="col-span-3"
+						/>
+					</div>
 				</div>
-				<div class="grid grid-cols-4 items-center gap-4">
-					<Label class="text-right">OpenAI API Key</Label>
-					<Input
-						type="password"
-						id="openai_key"
-						bind:value={settings.openAiApiKey}
-						class="col-span-3"
-					/>
-				</div>
-			</div>
-			<Dialog.Footer>
-				<Button type="submit" on:click={save}>Save changes</Button>
-			</Dialog.Footer>
-		</Dialog.Content>
-	</Dialog.Root>
-</Sidebar>
-<slot />
+				<Dialog.Footer>
+					<Button type="submit" on:click={save}>Save changes</Button>
+				</Dialog.Footer>
+			</Dialog.Content>
+		</Dialog.Root>
+	</Sidebar>
+	<slot />
+</div>

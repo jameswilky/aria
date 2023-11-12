@@ -2,11 +2,14 @@
 	import { Text, MessageSquarePlus } from 'lucide-svelte';
 </script>
 
-<aside class="h-screen flex flex-col w-64 fixedborder-r pt-16 border-secondary border-r-2">
+<aside class="flex flex-col w-64 fixedborder-r border-secondary border-r-2">
 	<div
 		class="p-4 border-b border-slate-200 dark:border-slate-700 hover:primary dark:hover:bg-primary-foreground"
 	>
-		<a class="flex items-center space-x-3 text-primary dark:primary text-lg" href="/">
+		<a
+			class="flex items-center space-x-3 text-primary dark:primary text-lg"
+			href="/dashboard/new-conversation"
+		>
 			<MessageSquarePlus />
 			<span>New Conversation</span>
 		</a>

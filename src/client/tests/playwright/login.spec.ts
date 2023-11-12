@@ -30,7 +30,7 @@ test('User that does not exist cannot login', async ({ page }) => {
 	// Assert
 	await expect(page.getByText('Oops, something went wrong.')).toBeVisible();
 });
-test('User that exists, but has invalid credentials cannot login', async ({ page }) => {
+test('User that exists, but has invalid credentials and cannot login', async ({ page }) => {
 	// Arrange
 	const user = nextUser();
 	await createUser(user);
@@ -39,5 +39,7 @@ test('User that exists, but has invalid credentials cannot login', async ({ page
 
 	// Act
 	await loginPage.login(user);
+
+	// Assert
 	await expect(page.getByText('Oops, something went wrong.')).toBeVisible();
 });
