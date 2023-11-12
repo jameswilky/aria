@@ -13,7 +13,7 @@ const defaultSettings: Settings = {
 	openAiApiKey: ''
 };
 
-export function getSavedSettings(): Settings {
+export function getSettings(): Settings {
 	const settings = localStorage.getItem('settings');
 	return settings ? JSON.parse(settings) : { githubApiKey: '', openAiApiKey: '' };
 }

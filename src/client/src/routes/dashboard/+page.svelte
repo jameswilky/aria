@@ -4,6 +4,8 @@
 	import * as Card from '$lib/components/ui/card';
 	import { Button } from '$lib/components/ui/button';
 	import { ZodError, z } from 'zod';
+	import { getRepoFiles } from '$lib/github/githubWrapper';
+	import { getSettings } from '$lib/stores/settingsStore';
 
 	let errorMessage: string;
 
@@ -27,11 +29,9 @@
 	};
 
 	const fetchData = async (url: string): Promise<any> => {
-		const response = await fetch(`[Your API Endpoint]?url=${url}`);
-		if (!response.ok) {
-			throw new Error(`HTTP error! status: ${response.status}`);
-		}
-		return await response.json();
+		const apiKey = getSettings().githubApiKey;
+		const response = await getRepoFiles(url, apiKey);
+		return response;
 	};
 </script>
 

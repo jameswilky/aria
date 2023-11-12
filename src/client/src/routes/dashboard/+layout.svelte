@@ -7,14 +7,14 @@
 	import { Label } from '$lib/components/ui/label';
 
 	import { Settings as SettingsIcon } from 'lucide-svelte';
-	import { getSavedSettings, saveSettings, type Settings } from '$lib/stores/settingsStore';
+	import { getSettings, saveSettings, type Settings } from '$lib/stores/settingsStore';
 	import { onMount } from 'svelte';
 
 	let settings: Settings;
 	let dialogOpen = false;
 
 	onMount(() => {
-		settings = getSavedSettings();
+		settings = getSettings();
 	});
 
 	function save() {
@@ -24,12 +24,12 @@
 
 	function openStateChanged(open: boolean | undefined) {
 		if (!open) {
-			settings = getSavedSettings();
+			settings = getSettings();
 		}
 	}
 
 	function closeButtonClicked(e: Event) {
-		if (JSON.stringify(getSavedSettings()) !== JSON.stringify(settings)) {
+		if (JSON.stringify(getSettings()) !== JSON.stringify(settings)) {
 			if (confirm('You have unsaved changes, would you like to save them before continuing?')) {
 				save();
 			}
@@ -57,8 +57,7 @@
 				<Dialog.Header>
 					<Dialog.Title>Settings</Dialog.Title>
 					<Dialog.Description>
-						Supply the required API Keys here. None of this data is EVER sent to on our servers, its
-						all stored locally in your browser.
+						Supply the required API Keys here. None of this data is ever stored on our servers.
 					</Dialog.Description>
 				</Dialog.Header>
 				<div class="grid gap-4 py-4">
