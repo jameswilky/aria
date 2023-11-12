@@ -18,7 +18,7 @@ export class SignupPage {
 		await this.page.getByLabel('Email').fill(user.email);
 		await this.page.getByLabel('Password').click();
 		await this.page.getByLabel('Password').fill(user.password);
-		var continueButtonLocator = this.page.getByRole('button', { name: 'Continue' });
+		var continueButtonLocator = await this.page.getByRole('button', { name: 'Continue' });
 		await expect(continueButtonLocator).toBeVisible();
 		await expect(continueButtonLocator).toBeEnabled();
 		await continueButtonLocator.click();

@@ -16,7 +16,7 @@ export class LoginPage {
 		await this.page.getByLabel('Username').fill(`${user.username}`);
 		await this.page.getByLabel('Password').click();
 		await this.page.getByLabel('Password').fill(`${user.password}`);
-		var continueButtonLocator = this.page.getByRole('button', { name: 'Continue' });
+		var continueButtonLocator = await this.page.getByRole('button', { name: 'Continue' });
 		await expect(continueButtonLocator).toBeVisible();
 		await continueButtonLocator.click();
 	}

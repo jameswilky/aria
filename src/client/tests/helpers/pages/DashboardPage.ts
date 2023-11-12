@@ -30,6 +30,7 @@ export class DashboardPage {
 	};
 
 	githubApiKeyInput = () => this.page.locator('#github_key');
+
 	openAIApiKeyInput = () => this.page.locator('#openai_key');
 
 	getBanner = () =>
