@@ -4,7 +4,7 @@
 	import * as Card from '$lib/components/ui/card';
 	import { Button } from '$lib/components/ui/button';
 	import { ZodError, z } from 'zod';
-	import { getRepoFiles } from '$lib/github/githubWrapper';
+	import { getRepoFiles } from '$lib/github/GithubClient';
 	import { getSettings } from '$lib/stores/settingsStore';
 
 	let errorMessage: string;
