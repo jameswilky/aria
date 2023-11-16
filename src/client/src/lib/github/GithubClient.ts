@@ -19,7 +19,9 @@ export class GitHubClient {
 				ref: 'master'
 			});
 
-			return response.data.filter((item) => item.type === 'file').map((file) => file.path);
+			return response.data
+				.filter((item: any) => item.type === 'file')
+				.map((file: any) => file.path);
 		} catch (error) {
 			console.error('Error fetching repository data:', error);
 			return [];

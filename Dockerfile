@@ -17,6 +17,8 @@ RUN rm packages-microsoft-prod.deb
 # Update the OS
 RUN apt-get update && apt-get upgrade -y $$ 
 
+# Increase file watch limit
+
 # ============ Software ============
 
 # utilities
@@ -45,6 +47,8 @@ USER agent
 
 # ======= Dev Container ===
 FROM base as dev_container
+
+
 
 ARG USERNAME=vscode
 
