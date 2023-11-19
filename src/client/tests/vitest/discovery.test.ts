@@ -5,8 +5,8 @@ import { generateRandomFileSystem } from '../helpers/filesystem-generator';
 
 // Disabled, just used as a playground to test the GitHubClient. Not in CI
 describe.skip('[Discovery]', () => {
-	const path = import.meta.env.VITE_GITHUB_TEST_URL || '';
-	const auth = import.meta.env.VITE_GITHUB_API_KEY || '';
+	// const path = import.meta.env.VITE_GITHUB_TEST_URL || '';
+	// const auth = import.meta.env.VITE_GITHUB_API_KEY || '';
 
 	it('It should return return a file system object reflecting the file/directory contents of the repo', async () => {
 		// const client = githubClient(auth);
