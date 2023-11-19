@@ -13,44 +13,6 @@ export class GitHubClient {
 		this.octokit = new Octokit({ auth });
 	}
 
-	// async populateNode(
-	// 	contents: GithubContents,
-	// 	repo: string,
-	// 	owner: string,
-	// 	parentNode?: TreeNode<FileSystemEntity>
-	// ) {
-	// 	// @ts-ignore
-	// 	for (let content of contents) {
-	// 		if (content.type === 'file') {
-	// 			const loadCallback = async () => {
-	// 				const response = await this.octokit.rest.repos.getContent({
-	// 					owner,
-	// 					repo,
-	// 					content,
-	// 					path: content.path
-	// 				});
-	// 				if ('type' in response.data && response.data.type === 'file') {
-	// 					return Buffer.from(response.data.content, 'base64').toString('utf-8');
-	// 				} else {
-	// 					throw new Error('Path does not point to a file.');
-	// 				}
-	// 			};
-
-	// 			parentNode?.addChild(
-	// 				new TreeNode(new File(content.name, content.path, content.size, loadCallback))
-	// 			);
-	// 		} else {
-	// 			const response = await this.octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
-	// 				owner: owner,
-	// 				repo: repo,
-	// 				path: content.path
-	// 			});
-
-	// 			await this.populateNode(response.data, repo, owner, parentNode);
-	// 		}
-	// 	}
-	// }
-
 	getFileContents(
 		owner: string,
 		repo: string,

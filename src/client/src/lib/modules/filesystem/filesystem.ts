@@ -70,6 +70,18 @@ export interface FileSystemEntityData {
 	getFileContents: (data: FileSystemEntityData) => Promise<Result<string>>;
 }
 
+export interface FileEntityData {
+	name: string;
+	path: string;
+	size: number;
+	getFileContents: (data: FileSystemEntityData) => Promise<Result<string>>;
+}
+
+export interface DirectoryEntityData {
+	name: string;
+	path: string;
+}
+
 const populateNode = async (
 	entities: FileSystemEntityData[],
 	getDirectoryContents: (data: FileSystemEntityData) => Promise<Result<FileSystemEntityData[]>>,
@@ -85,6 +97,8 @@ const populateNode = async (
 			const data = await getDirectoryContents(entity);
 			if (data.success) {
 				await populateNode(data.value, getDirectoryContents, parentNode);
+			} else {
+				// ?
 			}
 		}
 	}
@@ -99,6 +113,8 @@ export const createFileSystem = async (
 	const entities = await getEntities();
 	if (entities.success) {
 		await populateNode(entities.value, getDirectoryContents, fileSystem.tree.root);
+	} else {
+		// ?
 	}
 	return fileSystem;
 };

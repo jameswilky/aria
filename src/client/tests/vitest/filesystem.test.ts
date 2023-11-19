@@ -1,24 +1,18 @@
 import { createFileSystem, type FileSystemEntityData } from '$lib/modules/filesystem/filesystem';
 import { GitHubClient } from '$lib/modules/github/GithubClient';
 import { assert, describe, expect, it, test } from 'vitest';
+import { simpleRepoWithMultipleDirectoriesAndAFiles } from '../testdata/filesystemData';
 
-// Disabled, just used as a playground to test the GitHubClient. Not in CI
-describe.skip('[Discovery] GitHubClient', () => {
+describe('Filesystem Tests', () => {
 	const path = import.meta.env.VITE_GITHUB_TEST_URL || '';
 	const auth = import.meta.env.VITE_GITHUB_API_KEY || '';
 
-	it('It should return return a file system object reflecting the file/directory contents of the repo', async () => {
-		const client = new GitHubClient(auth);
-		const urlSegments = new URL(path).pathname.split('/');
-		const owner = urlSegments[1];
-		const repo = urlSegments[2];
-
+	it.skip('It should return return a file system object reflecting the file/directory contents of the repo', async () => {
 		const fs = await createFileSystem(
-			() => client.getRepoContents(repo, owner),
+			() => Promise.resolve({ success: true, value: data }),
 			client.getDirectoryContents(owner, repo),
-			repo
+			'data'
 		);
-
 		const x = fs.tree.root.children[0].data;
 
 		//@ts-ignore
