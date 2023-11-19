@@ -1,20 +1,4 @@
-export type MockFile = {
-	name: string;
-	path: string;
-	type: 'file';
-	size: number;
-	contents: string;
-};
-
-export type MockDirectory = {
-	name: string;
-	path: string;
-	type: 'dir';
-	size?: number | 0;
-	children: MockFileSystemEntity[];
-};
-
-export type MockFileSystemEntity = MockFile | MockDirectory;
+import type { MockFileSystemEntity } from '../helpers/filesystem-generator';
 
 export const simpleRepoWithMultipleDirectoriesAndAFiles: MockFileSystemEntity[] = [
 	{

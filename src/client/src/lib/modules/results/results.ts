@@ -1,9 +1,11 @@
-export type Result<T> = { success: true; value: T } | { success: false; error: unknown };
+export type Result<TSuccess, TError = unknown> =
+	| { success: true; value: TSuccess }
+	| { success: false; error: TError };
 
-export const error = (error: unknown): { success: false; error: unknown } => {
+export const error = <T = unknown>(error: T): { success: false; error: T } => {
 	return { success: false, error };
 };
 
-export const success = <T>(value: T): Result<T> => {
+export const success = <TSuccess, TError = unknown>(value: TSuccess): Result<TSuccess, TError> => {
 	return { success: true, value };
 };

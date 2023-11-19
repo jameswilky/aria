@@ -4,7 +4,24 @@ import {
 	type FileSystemEntityData,
 	type DirectoryEntityData
 } from '../../src/lib/modules/filesystem/filesystem';
-import type { MockFileSystemEntity } from '../testdata/filesystemData';
+
+export type MockFile = {
+	name: string;
+	path: string;
+	type: 'file';
+	size: number;
+	contents: string;
+};
+
+export type MockDirectory = {
+	name: string;
+	path: string;
+	type: 'dir';
+	size?: number | 0;
+	children: MockFileSystemEntity[];
+};
+
+export type MockFileSystemEntity = MockFile | MockDirectory;
 
 function findObjectByPath(
 	entities: MockFileSystemEntity[],
@@ -61,4 +78,53 @@ function addFunctionToFiles(entity: any) {
 export async function buildFileSystem(data: MockFileSystemEntity[]): Promise<FileSystem> {
 	data.forEach((entity: any) => addFunctionToFiles(entity));
 	return FileSystem.create(() => getRootContents(data), getDirectoryContentsCallback(data), 'data');
+}
+
+// Helper function to generate a random string
+function randomString(length: number): string {
+	const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+	let result = '';
+	for (let i = 0; i < length; i++) {
+		result += characters.charAt(Math.floor(Math.random() * characters.length));
+	}
+	return result;
+}
+
+// Function to create a mock file system entity with random data
+function createRandomMockEntity(
+	currentPath: string,
+	depth: number,
+	width: number
+): MockFileSystemEntity {
+	if (depth === 0) {
+		// At the deepest level, create only files
+		const name = randomString(10) + '.txt';
+		const contents = randomString(50);
+		return {
+			name,
+			path: currentPath + '/' + name,
+			type: 'file',
+			size: contents.length,
+			contents
+		};
+	} else {
+		// Create directories with recursive calls
+		const name = randomString(10);
+		const newPath = currentPath + (currentPath ? '/' : '') + name;
+		const children = [];
+		for (let i = 0; i < width; i++) {
+			children.push(createRandomMockEntity(newPath, depth - 1, width));
+		}
+		return {
+			name,
+			path: newPath,
+			type: 'dir',
+			children
+		};
+	}
+}
+
+// Generate a file system with a specified depth and width
+export function generateRandomFileSystem(depth: number, width: number): MockFileSystemEntity[] {
+	return [createRandomMockEntity('', depth - 1, width)]; // Adjusting depth for the root
 }

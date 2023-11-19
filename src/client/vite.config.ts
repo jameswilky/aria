@@ -14,7 +14,7 @@ export default defineConfig(({ mode }) => {
 		// ... your code ...
 		plugins,
 		test: {
-			include: ['src/**/*.{test,spec}.{js,ts}', 'tests/vitest/*.{test,spec}.{js,ts}'],
+			include: ['src/**/*.{test,spec}.{js,ts}', 'tests/vitest/**/*.{test,spec}.{js,ts}'],
 			exclude: [
 				'tests/playwright/**/*.{test,spec}.{js,ts}',
 				'src/tests/playwright/**/*.{test,spec}.{js,ts}'

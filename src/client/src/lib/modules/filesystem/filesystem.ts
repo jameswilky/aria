@@ -54,9 +54,11 @@ export abstract class FileSystemEntity {
 
 export class FileSystem {
 	private _tree: Tree<FileSystemEntity>;
+	private _table: Map<string, TreeNode<FileSystemEntity>>;
 
 	constructor(rootData: FileSystemEntity) {
 		this._tree = new Tree<FileSystemEntity>(rootData);
+		this._table = new Map<string, TreeNode<FileSystemEntity>>();
 	}
 
 	public get root(): TreeNode<FileSystemEntity> {
@@ -74,14 +76,16 @@ export class FileSystem {
 				const load = async () => {
 					return fileEntity.getFileContents(fileEntity);
 				};
-				parentNode?.addChild(
-					new TreeNode(new File(fileEntity.name, fileEntity.path, fileEntity.size, load))
+				var fileNode = new TreeNode(
+					new File(fileEntity.name, fileEntity.path, fileEntity.size, load)
 				);
+				this._table.set(fileEntity.path, fileNode);
+				parentNode?.addChild(fileNode);
 			} else {
 				const dirEntity = entity as DirectoryEntityData;
 				const directoryNode = new TreeNode(new Directory(dirEntity.name, dirEntity.path));
+				this._table.set(dirEntity.path, directoryNode);
 				parentNode?.addChild(directoryNode);
-
 				const data = await getDirectoryContents(dirEntity);
 				if (data.success) {
 					await this.addEntities(data.value, getDirectoryContents, directoryNode);
@@ -107,11 +111,42 @@ export class FileSystem {
 		return fileSystem;
 	};
 
-	public getFile(path: string): File {}
+	public getNodeByPath(path: string): Result<TreeNode<File> | TreeNode<Directory>, string> {
+		const node = this._table.get(path);
+		if (node) {
+			if (node.data instanceof File) {
+				return success(node as TreeNode<File>);
+			} else if (node.data instanceof Directory) {
+				return success(node as TreeNode<Directory>);
+			} else {
+				return error('Path is an invalid file type');
+			}
+		}
+		return error('Path not found.');
+	}
 
-	public getDirectory(path: string) {}
+	public getNodesByPattern(
+		regex: RegExp
+	): Result<(TreeNode<File> | TreeNode<Directory>)[], string> {
+		var matches = [];
+		for (const [path, node] of this._table) {
+			if (regex.test(path)) {
+				if (node.data instanceof File) {
+					matches.push(node as TreeNode<File>);
+				} else if (node.data instanceof Directory) {
+					matches.push(node as TreeNode<Directory>);
+				} else {
+					return error('Path is an invalid file type');
+				}
+			}
+		}
+		if (matches.length > 0) {
+			return success(matches);
+		}
+		return error('Path not found.');
+	}
 
-	public getEntitiesFrom(path: string) {}
+	// public getEntitiesFrom(path: string) {}
 }
 
 export interface FileEntityData {
