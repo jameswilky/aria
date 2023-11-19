@@ -6,10 +6,7 @@
 	<div
 		class="p-4 border-b border-slate-200 dark:border-slate-700 hover:primary dark:hover:bg-primary-foreground"
 	>
-		<a
-			class="flex items-center space-x-3 text-primary dark:primary text-lg"
-			href="/dashboard/new-conversation"
-		>
+		<a class="flex items-center space-x-3 text-primary dark:primary text-lg" href="/dashboard/">
 			<MessageSquarePlus />
 			<span>New Conversation</span>
 		</a>

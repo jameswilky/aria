@@ -145,8 +145,6 @@ export class FileSystem {
 		}
 		return error('Path not found.');
 	}
-
-	// public getEntitiesFrom(path: string) {}
 }
 
 export interface FileEntityData {

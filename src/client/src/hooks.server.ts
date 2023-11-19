@@ -4,7 +4,6 @@ import type { Handle } from '@sveltejs/kit';
 
 export const handle: Handle = async ({ event, resolve }) => {
 	const token = event.cookies.get('AuthorizationToken');
-	console.log(`Token from cookies : ${token}`);
 	if (token) {
 		const result = await getProfile(token);
 		console.log(result);

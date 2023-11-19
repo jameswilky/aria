@@ -6,20 +6,20 @@
 	import { ZodError, z } from 'zod';
 	//import { getRepoFiles } from '$lib/modules/github/GithubClient';
 	import { getSettings } from '$lib/stores/settingsStore';
+	import { githubClient } from '$lib/modules/github/GithubClient';
 
 	let errorMessage: string;
 
-	const githubUrlSchema = z
-		.string()
-		.url()
-		.regex(/https:\/\/github\.com\/[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+/, 'Must be a valid GitHub URL');
-
 	let repoUrl: string = 'https://github.com/';
+	let repo: string;
+	let owner: string;
 
-	const validateAndFetchData = async () => {
+	const validateRepo = async () => {
 		try {
-			githubUrlSchema.parse(repoUrl);
-			const data = await fetchData(repoUrl);
+			const githubApiKey = getSettings().githubApiKey;
+			const client = githubClient(githubApiKey);
+			const apiKeyValid = await client.validateApiKey();
+			const data = await client.validateRepoExists(owner, repo);
 			// Redirect to new page with fetched data
 		} catch (error) {
 			if (error instanceof ZodError) {
@@ -27,24 +27,10 @@
 			}
 		}
 	};
-
-	const fetchData = async (url: string): Promise<any> => {
-		const apiKey = getSettings().githubApiKey;
-		//const response = await getRepoFiles(url, apiKey);
-		const response = await fetch(
-			'https://api.github.com/repos/luke-h1/luke-h1.github.io/contents',
-			{
-				headers: {
-					Authorization: `token ${apiKey}`
-				}
-			}
-		);
-		return response;
-	};
 </script>
 
 <div class="flex w-[100%] justify-center items-center">
-	<Card.Root class="justify-around w-[600px] h-[260px] mb-40">
+	<Card.Root class="justify-around w-[600px] mb-40">
 		<Card.Header>
 			<Card.Title>Specify a GitHub Repository</Card.Title>
 			<Card.Description>
@@ -53,8 +39,17 @@
 		</Card.Header>
 		<Card.Content>
 			<div>
-				<Label>Repository URL</Label>
-				<Input bind:value={repoUrl} type="search" placeholder="Search..." />
+				<Label>Repository Owner</Label>
+				<Input bind:value={owner} type="search" placeholder="Search..." />
+				<div class=" h-2">
+					{#if errorMessage}
+						<p class="text-destructive text-sm">{errorMessage}</p>
+					{/if}
+				</div>
+			</div>
+			<div>
+				<Label>Repository Name</Label>
+				<Input bind:value={repo} type="search" placeholder="Search..." />
 				<div class=" h-2">
 					{#if errorMessage}
 						<p class="text-destructive text-sm">{errorMessage}</p>
@@ -63,7 +58,7 @@
 			</div>
 		</Card.Content>
 		<Card.Footer class="flex justify-end">
-			<Button on:click={validateAndFetchData}>Start</Button>
+			<Button on:click={validateRepo}>Start</Button>
 		</Card.Footer>
 	</Card.Root>
 </div>

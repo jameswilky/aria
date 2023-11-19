@@ -10,20 +10,16 @@ import type {
 
 type GithubContents = Endpoints['GET /repos/{owner}/{repo}/contents/{path}']['response']['data'];
 
-export class GitHubClient {
-	private octokit: Octokit;
+export const githubClient = (auth: string) => {
+	const octokit = new Octokit({ auth });
 
-	constructor(auth: string) {
-		this.octokit = new Octokit({ auth });
-	}
-
-	getFileContents(
+	const getFileContents = (
 		owner: string,
 		repo: string,
 		branch: string = 'master'
-	): (path: string) => Promise<Result<string>> {
+	): ((path: string) => Promise<Result<string>>) => {
 		return async (path: string) => {
-			const response = await this.octokit.rest.repos.getContent({
+			const response = await octokit.rest.repos.getContent({
 				owner,
 				repo,
 				path,
@@ -39,16 +35,43 @@ export class GitHubClient {
 				return error(e);
 			}
 		};
-	}
+	};
 
-	getDirectoryContents(
+	const validateApiKey = async (): Promise<Result<boolean>> => {
+		try {
+			const result = await octokit.rest.users.getAuthenticated();
+			return success(true);
+		} catch (e) {
+			if (e instanceof Error) {
+				if (e.message === 'Not Found') return error('Not Found');
+				if (e.message === 'Bad credentials') return success(false);
+			}
+			return error(e);
+		}
+	};
+
+	const validateRepoExists = async (owner: string, repo: string): Promise<Result<boolean>> => {
+		try {
+			const result = await octokit.rest.repos.get({ owner, repo });
+			console.log(result);
+			return success(true);
+		} catch (e) {
+			if (e instanceof Error) {
+				if (e.message === 'Not Found') return success(false);
+				if (e.message === 'Bad credentials') return error('Bad credentials');
+			}
+			return error(e);
+		}
+	};
+
+	const getDirectoryContents = (
 		owner: string,
 		repo: string,
 		branch: string = 'master'
-	): (entity: DirectoryEntityData) => Promise<Result<any>> {
+	): ((entity: DirectoryEntityData) => Promise<Result<any>>) => {
 		return async (entity: DirectoryEntityData) => {
 			try {
-				const response = await this.octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
+				const response = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
 					owner,
 					repo,
 					path: entity.path,
@@ -64,7 +87,7 @@ export class GitHubClient {
 								path: content.path,
 								type: content.type,
 								size: content.size,
-								getFileContents: this.getFileContents(owner, repo, branch)
+								getFileContents: getFileContents(owner, repo, branch)
 							};
 						});
 
@@ -76,15 +99,15 @@ export class GitHubClient {
 				return error(e);
 			}
 		};
-	}
+	};
 
-	async getRepoContents(
+	const getRepoContents = async (
 		owner: string,
 		repo: string,
 		branch: string = 'master'
-	): Promise<Result<FileSystemEntityData[]>> {
+	): Promise<Result<FileSystemEntityData[]>> => {
 		try {
-			const response = await this.octokit.request('GET /repos/{owner}/{repo}/contents', {
+			const response = await octokit.request('GET /repos/{owner}/{repo}/contents', {
 				owner,
 				repo,
 				ref: branch
@@ -93,5 +116,12 @@ export class GitHubClient {
 		} catch (e) {
 			return error(e);
 		}
-	}
-}
+	};
+
+	return {
+		getRepoContents,
+		getDirectoryContents,
+		validateRepoExists,
+		validateApiKey
+	};
+};
