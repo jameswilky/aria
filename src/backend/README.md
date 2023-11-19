@@ -11,3 +11,7 @@ and see errors saying '.NET not found', make sure you make the following changes
 
 Edit /etc/dotnet/install_location and /etc/dotnet/install_location_x64
 Change /usr/lib/dotnet to /usr/share/dotnet in both files.
+
+## create ts files
+
+dotnet nswag run nswag.json

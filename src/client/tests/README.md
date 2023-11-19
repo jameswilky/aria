@@ -11,3 +11,14 @@ By default the server runs on the same host as the sveltekit app, if you are usi
 ## Vitest tests not in explorer
 
 Rebuild container without cache
+
+## Note about File watch limit
+
+to avoid problems with the debugger, run this on your host machine
+
+```
+echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf
+
+sudo sysctl -p
+
+```
