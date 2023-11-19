@@ -62,25 +62,21 @@ export class FileSystem {
 	addEntity(entity: FileSystemEntity, parent?: FileSystemEntity) {}
 }
 
-export interface FileSystemEntityData {
-	name: string;
-	path: string;
-	type: 'file' | 'dir';
-	size: number;
-	getFileContents: (data: FileSystemEntityData) => Promise<Result<string>>;
-}
-
 export interface FileEntityData {
 	name: string;
 	path: string;
 	size: number;
-	getFileContents: (data: FileSystemEntityData) => Promise<Result<string>>;
+	getFileContents: (data: FileEntityData) => Promise<Result<string>>;
+	type: 'file';
 }
 
 export interface DirectoryEntityData {
 	name: string;
 	path: string;
+	type: 'dir';
 }
+
+export type FileSystemEntityData = FileEntityData | DirectoryEntityData;
 
 const populateNode = async (
 	entities: FileSystemEntityData[],
@@ -89,16 +85,20 @@ const populateNode = async (
 ) => {
 	for (const entity of entities) {
 		if (entity.type === 'file') {
+			const fileEntity = entity as FileEntityData;
 			const load = async () => {
-				return entity.getFileContents(entity);
+				return fileEntity.getFileContents(fileEntity);
 			};
-			parentNode?.addChild(new TreeNode(new File(entity.name, entity.path, entity.size, load)));
+			parentNode?.addChild(
+				new TreeNode(new File(fileEntity.name, fileEntity.path, fileEntity.size, load))
+			);
 		} else {
-			const data = await getDirectoryContents(entity);
+			const dirEntity = entity as DirectoryEntityData;
+			const data = await getDirectoryContents(dirEntity);
 			if (data.success) {
 				await populateNode(data.value, getDirectoryContents, parentNode);
 			} else {
-				// ?
+				// Handle failure
 			}
 		}
 	}

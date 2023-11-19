@@ -10,6 +10,7 @@ import {
 // };
 
 const getDirectoryContents = (data: any): Promise<Result<FileSystemEntityData[]>> => {
+	const x = data.map;
 	return Promise.resolve(success(data));
 };
 
