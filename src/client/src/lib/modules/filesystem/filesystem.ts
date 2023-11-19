@@ -8,7 +8,7 @@ export class File implements FileSystemEntity {
 	public readonly byteSize: number;
 	private loadCallback: () => Promise<Result<string>>;
 	public isLoaded: boolean = false;
-	public fileContents: string = '';
+	public contents: string = '';
 
 	constructor(
 		name: string,
@@ -25,7 +25,7 @@ export class File implements FileSystemEntity {
 	public async load(): Promise<boolean> {
 		const result = await this.loadCallback();
 		if (result.success) {
-			this.fileContents = result.value;
+			this.contents = result.value;
 			this.isLoaded = true;
 			return true;
 		}
@@ -53,13 +53,65 @@ export abstract class FileSystemEntity {
 }
 
 export class FileSystem {
-	public tree: Tree<FileSystemEntity>;
+	private _tree: Tree<FileSystemEntity>;
 
 	constructor(rootData: FileSystemEntity) {
-		this.tree = new Tree<FileSystemEntity>(rootData);
+		this._tree = new Tree<FileSystemEntity>(rootData);
 	}
 
-	addEntity(entity: FileSystemEntity, parent?: FileSystemEntity) {}
+	public get root(): TreeNode<FileSystemEntity> {
+		return this._tree.root;
+	}
+
+	public addEntities = async (
+		entities: FileSystemEntityData[],
+		getDirectoryContents: (data: DirectoryEntityData) => Promise<Result<any>>,
+		parentNode?: TreeNode<FileSystemEntity>
+	) => {
+		for (const entity of entities) {
+			if (entity.type === 'file') {
+				const fileEntity = entity as FileEntityData;
+				const load = async () => {
+					return fileEntity.getFileContents(fileEntity);
+				};
+				parentNode?.addChild(
+					new TreeNode(new File(fileEntity.name, fileEntity.path, fileEntity.size, load))
+				);
+			} else {
+				const dirEntity = entity as DirectoryEntityData;
+				const directoryNode = new TreeNode(new Directory(dirEntity.name, dirEntity.path));
+				parentNode?.addChild(directoryNode);
+
+				const data = await getDirectoryContents(dirEntity);
+				if (data.success) {
+					await this.addEntities(data.value, getDirectoryContents, directoryNode);
+				} else {
+					// Handle failure
+				}
+			}
+		}
+	};
+
+	public static create = async (
+		getEntities: () => Promise<Result<FileSystemEntityData[]>>,
+		getDirectoryContents: (data: DirectoryEntityData) => Promise<Result<any>>,
+		root: string
+	): Promise<FileSystem> => {
+		var fileSystem = new FileSystem(new Directory(root, root));
+		const entities = await getEntities();
+		if (entities.success) {
+			await fileSystem.addEntities(entities.value, getDirectoryContents, fileSystem.root);
+		} else {
+			// ?
+		}
+		return fileSystem;
+	};
+
+	public getFile(path: string): File {}
+
+	public getDirectory(path: string) {}
+
+	public getEntitiesFrom(path: string) {}
 }
 
 export interface FileEntityData {
@@ -77,44 +129,3 @@ export interface DirectoryEntityData {
 }
 
 export type FileSystemEntityData = FileEntityData | DirectoryEntityData;
-
-const populateNode = async (
-	entities: FileSystemEntityData[],
-	getDirectoryContents: (data: FileSystemEntityData) => Promise<Result<FileSystemEntityData[]>>,
-	parentNode?: TreeNode<FileSystemEntity>
-) => {
-	for (const entity of entities) {
-		if (entity.type === 'file') {
-			const fileEntity = entity as FileEntityData;
-			const load = async () => {
-				return fileEntity.getFileContents(fileEntity);
-			};
-			parentNode?.addChild(
-				new TreeNode(new File(fileEntity.name, fileEntity.path, fileEntity.size, load))
-			);
-		} else {
-			const dirEntity = entity as DirectoryEntityData;
-			const data = await getDirectoryContents(dirEntity);
-			if (data.success) {
-				await populateNode(data.value, getDirectoryContents, parentNode);
-			} else {
-				// Handle failure
-			}
-		}
-	}
-};
-
-export const createFileSystem = async (
-	getEntities: () => Promise<Result<FileSystemEntityData[]>>,
-	getDirectoryContents: (entity: FileSystemEntityData) => Promise<Result<FileSystemEntityData[]>>,
-	root: string
-): Promise<FileSystem> => {
-	var fileSystem = new FileSystem(new Directory(root, root));
-	const entities = await getEntities();
-	if (entities.success) {
-		await populateNode(entities.value, getDirectoryContents, fileSystem.tree.root);
-	} else {
-		// ?
-	}
-	return fileSystem;
-};

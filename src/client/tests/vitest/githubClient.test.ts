@@ -1,4 +1,4 @@
-import { createFileSystem, type FileSystemEntityData } from '$lib/modules/filesystem/filesystem';
+import { type FileSystemEntityData, FileSystem } from '$lib/modules/filesystem/filesystem';
 import { GitHubClient } from '$lib/modules/github/GithubClient';
 import { assert, describe, expect, it, test } from 'vitest';
 
@@ -13,13 +13,13 @@ describe.skip('[Discovery] GitHubClient', () => {
 		const owner = urlSegments[1];
 		const repo = urlSegments[2];
 
-		const fs = await createFileSystem(
+		const fs = await FileSystem.create(
 			() => client.getRepoContents(repo, owner),
 			client.getDirectoryContents(owner, repo),
 			repo
 		);
 
-		const x = fs.tree.root.children[0].data;
+		const x = fs.root.children[0].data;
 
 		//@ts-ignore
 		await x.load();

@@ -44,8 +44,8 @@ export class Tree<T> {
 		}
 	}
 
-	// Find a node in the tree
-	private findNode(node: TreeNode<T> | null, data: T): TreeNode<T> | null {
+	// Depth first search to find nodes in the tree
+	public findNode(node: TreeNode<T> | null, data: T): TreeNode<T> | null {
 		if (!node) {
 			return null;
 		}
@@ -62,18 +62,5 @@ export class Tree<T> {
 		}
 
 		return null;
-	}
-
-	// Example tree traversal method (Depth-first)
-	public traverseDFS(node: TreeNode<T> | null, callback: (node: TreeNode<T>) => void): void {
-		if (!node) {
-			return;
-		}
-
-		callback(node);
-
-		node.children.forEach((child) => {
-			this.traverseDFS(child, callback);
-		});
 	}
 }

@@ -2,7 +2,11 @@ import { Octokit } from 'octokit';
 import type { Endpoints, OctokitResponse } from '@octokit/types';
 import type { Result } from '../results/results';
 import { success, error } from '../results/results';
-import type { FileEntityData, FileSystemEntityData } from '../filesystem/filesystem';
+import type {
+	DirectoryEntityData,
+	FileEntityData,
+	FileSystemEntityData
+} from '../filesystem/filesystem';
 
 type GithubContents = Endpoints['GET /repos/{owner}/{repo}/contents/{path}']['response']['data'];
 
@@ -17,12 +21,12 @@ export class GitHubClient {
 		owner: string,
 		repo: string,
 		branch: string = 'master'
-	): (entity: FileEntityData) => Promise<Result<string>> {
-		return async (entity: FileSystemEntityData) => {
+	): (path: string) => Promise<Result<string>> {
+		return async (path: string) => {
 			const response = await this.octokit.rest.repos.getContent({
-				owner: owner,
-				repo: repo,
-				path: entity.path,
+				owner,
+				repo,
+				path,
 				ref: branch
 			});
 			try {
@@ -41,9 +45,8 @@ export class GitHubClient {
 		owner: string,
 		repo: string,
 		branch: string = 'master'
-	): (entity: FileSystemEntityData) => Promise<Result<FileSystemEntityData[]>> {
-		// @ts-ignore
-		return async (entity: FileSystemEntityData) => {
+	): (entity: DirectoryEntityData) => Promise<Result<any>> {
+		return async (entity: DirectoryEntityData) => {
 			try {
 				const response = await this.octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
 					owner,
