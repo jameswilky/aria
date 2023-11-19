@@ -6,3 +6,4 @@ fonts
 .zshrc
 .idea
 install.sh
+node_modules

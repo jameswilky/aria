@@ -1,6 +1,6 @@
 # Aria
 
-Aria is a application that allows you to talk
+Aria is a application that allows you to specify a github repo and use it as context to chat with an AI
 
 ## Techologies
 
